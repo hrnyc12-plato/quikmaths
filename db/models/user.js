@@ -22,7 +22,7 @@ const User = sequelize.define('user', {
   },
   bestTime: {
     type: Sequelize.INTEGER,
-    defaultValue: 1000000
+    defaultValue: 0
   }
 });
 

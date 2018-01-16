@@ -9,9 +9,6 @@ import LeaderBoard from './components/leaderBoard.jsx';
 import UserInfo from './components/userInfo.jsx';
 import Login from './components/login.jsx';
 import SignUp from './components/signUp.jsx';
-import questionGen from '../../problemGen.js';
-import _ from 'underscore';
-
 
 class App extends React.Component {
   constructor(props) {
@@ -19,17 +16,12 @@ class App extends React.Component {
     this.state = {
       problemType: '+',
       timeElapsed: 0,
-      startTime: 0,
       numberCorrect: 0,
       numberIncorrect: 0,
       questionsLeft: 0,
       inProgressBool: false,
       correctArray: [],
       incorrectArray: [],
-      //state for newQuestion
-      questionString: [],
-      answers: [],
-      correctAnswer: undefined,
       // states for userinfo
       username: null,
       userId: null,
@@ -39,101 +31,58 @@ class App extends React.Component {
       totalIncorrect: null,
       highScore: null,
       bestTime: null,
+      // correctPercentage: this.state.totalCorrect / (this.state.totalCorrect + this.state.totalIncorrect) * 100
       // array of leaderboard records
       recordsList: [],
       // render login page conditionally
       isLoggedIn: false,
-      // render game or chooseyourpath conditionally
-      choosePathMode: true,
-      isSignedUp: true,
-      totalUserCorrect: null,
-      totalUserIncorrect: null,
-      mounted: false
+      isSignedUp: true
     }
     this.AppStyle = {
-      fontFamily: 'Poppins',
       display: 'grid',
-      gridTemplateColumns: '2fr 5fr',
-      gridColumnGap: '2.5%',
-      backgroundColor: '#96bbbb'
-    }
-    this.collapseStyle = {
+      gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr',
+      gridTemplateRows: '1fr 1fr 1fr 1fr 1fr',
       fontFamily: 'Poppins',
-      display: 'grid',
-      gridTemplateColumns: '1fr',
-      gridColumnGap: '2.5%', 
-      backgroundColor: '#96bbbb'
+      padding: '10px'
     }
-    this.NavTopBarStyle = {
-      backgroundColor: "#F2E3BC"
+    this.NavSideBarStyle = {
+      gridColumn: '1',
+      gridRow: '2/5'
+    }
+    this.InfoSideBarStyle = {
+      gridColumn: '5',
+      gridRow: '2/5',
+      fontFamily: 'Poppins',
+      backgroundColor: 'gray'
+    }
+    this.GameStyle = {
+      gridColumn: '2/4',
+      gridRow: '2/5'
     }
 
     this.handleLogin = this.handleLogin.bind(this);
     this.handleSignUp = this.handleSignUp.bind(this);
     this.goToSignUp = this.goToSignUp.bind(this);
-    this.goToLogin = this.goToLogin.bind(this)
-    this.startNewGame = this.startNewGame.bind(this)
-    this.inProgressBoolUpdate = this.inProgressBoolUpdate.bind(this)
-    this.questionsLeftUpdate = this.questionsLeftUpdate.bind(this)
-    this.getUserInfo = this.getUserInfo.bind(this)
-    this.getLeaderBoard = this.getLeaderBoard.bind(this)
-    this.numberCorrectUpdate = this.numberCorrectUpdate.bind(this)
-    this.numberIncorrectUpdate = this.numberIncorrectUpdate.bind(this)
-    this.resetCounts = this.resetCounts.bind(this)
-    this.questionsLeftUpdate = this.questionsLeftUpdate.bind(this)
-    this.inProgressBoolUpdate = this.inProgressBoolUpdate.bind(this)
-    this.correctArrayUpdate = this.correctArrayUpdate.bind(this)
-    this.incorrectArrayUpdate = this.incorrectArrayUpdate.bind(this)
-    this.showChoosePathMode = this.showChoosePathMode.bind(this)
-    this.startNewGame = this.startNewGame.bind(this)
-    this.logout = this.logout.bind(this)
-    this.updateUserInfo = this.updateUserInfo.bind(this)
-    this.newQuestion = this.newQuestion.bind(this);
-  }
-
-  componentDidMount(){
-    this.getIndex()
-  }
-
-  newQuestion() {
-    let infoObject = questionGen(this.state.problemType, 3, 1);
-    this.setState({
-      questionString: `${infoObject.question[1]} ${infoObject.question[0]} ${infoObject.question[2]}`,
-      answers: _.shuffle(infoObject.choices),
-      correctAnswer: infoObject.correctAnswer
-    })
-  }
-
-  getIndex(){
-    axios.get('/git')
-         .then((result) => {
-           console.log('result from get index', result);
-           if (result.data !== false){
-            this.setState({
-              isLoggedIn: true, 
-              username: result.data.user,
-              mounted: true
-            }, () => {
-              this.getUserInfo();
-            })
-           } else {
-            this.setState({
-              mounted: true
-            })
-           }
-         })
+    this.goToLogin = this.goToLogin.bind(this);
   }
 
   startTimer() {
-
+    // timer adds seconds to timeElapsed as long as game is in progress
     setTimeout(() => {
       if (this.state.inProgressBool) {
         this.setState({
-          timeElapsed: Date.now() - this.state.startTime
+          timeElapsed: this.state.timeElapsed + 1
         })
         this.startTimer()
       }
-    }, 1)
+    }, 1000)
+  }
+
+  problemTypeUpdate(operator) {
+    // navsidebar passes in operator onclick
+    this.setState({
+      problemType: operator
+    })
   }
 
   inProgressBoolUpdate() {
@@ -144,6 +93,7 @@ class App extends React.Component {
       if (this.state.inProgressBool) {
         this.startTimer()
       } else {
+        this.saveRecord()
         this.setState({
           timeElapsed: 0
         })
@@ -166,18 +116,13 @@ class App extends React.Component {
   resetCounts() {
     this.setState({
       numberIncorrect: 0,
-      numberCorrect: 0,
-      correctArray: [],
-      incorrectArray: []
+      numberCorrect: 0
     })
   }
 
-  questionsLeftUpdate(cb) {
+  questionsLeftUpdate() {
     this.setState({
       questionsLeft: this.state.questionsLeft - 1
-    }, ()=> {
-      // run callback (i.e. save data) after question count updated
-      cb(this.state.questionsLeft)
     })
   }
 
@@ -196,97 +141,71 @@ class App extends React.Component {
     this.state.incorrectArray.push(question);
   }
 
-  showChoosePathMode() {
-    this.setState({
-      choosePathMode: true
-    })
-  }
-
   startNewGame(operator) {
     this.setState({
       questionsLeft: 10, 
-      problemType: operator,
-      choosePathMode: false,
-      startTime: Date.now()
-    }, () => {
-      this.newQuestion(operator);
-      this.resetCounts()
-      this.inProgressBoolUpdate()
+      problemType: operator
     })
+    this.resetCounts()
+    this.inProgressBoolUpdate()
   }
 
   getUserInfo() {
-    axios.post('/user', {
-      username: this.state.username
+    console.log('getting user info')
+    axios.post('/userRecords', {
+      username: 'username',
+      operator: null,
+      ascending: false
     })
-    .then((response)=> {
-      console.log('response from post request', response);
-      this.setState({
-        username: response.data[0].username,
-        createdAt: response.data[0].createdAt,
-        gamesPlayed: response.data[0].gamesPlayed,
-        totalCorrect: response.data[0].totalCorrect,
-        totalIncorrect: response.data[0].totalIncorrect,
-        highScore: response.data[0].highScore,
-        bestTime: response.data[0].bestTime,
-      })
+    .then(function (response) {
+      console.log(response);
     })
-    .catch((error)=> {
+    .catch(function (error) {
       console.log(error);
     });
   }
-
-  updateUserInfo(object) {
-    this.setState({
-      highScore: object.data.highScore,
-      bestTime: object.data.bestTime,
-      totalUserIncorrect: object.data.totalIncorrect,
-      totalUserCorrect: object.data.totalCorrect,
-      gamesPlayed: object.data.gamesPlayed
-
-    }, () => console.log('totalUserCorrect', this.state.totalUserCorrect) )
-  }
   
   getLeaderBoard() {
+    console.log('getting records')
     axios.post('/allRecords', {
-        operator: this.props.problemType,
+        operator: undefined,
         ascending: false
     })
-    .then((response)=> {
-      this.setState({
-        recordsList: response.data
-      })
+    .then(function (response) {
+      console.log(response);
     })
-    .catch((error)=> {
+    .catch(function (error) {
       console.log(error);
     });
   }
 
   handleSignUp(obj){
     axios.post('/signup', obj)
-      .then((result) => {
-        if(result.data === false) {
-          alert('username already exists');
-        } else {
-          this.setState({"isLoggedIn" : true, 
-          "username" : result.data}) 
-        }
-      })
+         .then((result) => {
+            if(result.data === false) {
+               alert('username already exists');
+            } else {
+              console.log('signup this', this)
+               this.setState({"isLoggedIn" : true, 
+                              "username" : result.data.username, 
+                              "userId" : result.data.id}) 
+            }
+          })
   }
 
   handleLogin(obj) {
     axios.post('/login', obj)
-      .then((result) => {
-        if (result.data === false) {
-          alert('Please try again or Create New Account');
-        } else {
-          this.setState({"isSignedUp": true, 
-          "isLoggedIn": true, 
-          "username": result.data}, () => {
-            this.getUserInfo()
-          })
-        }
-      })
+         .then((result) => {
+            if (result.data === false) {
+              alert('Please try again or Create New Account');
+            } else {
+              this.setState({"isSignedUp": true, 
+                            "isLoggedIn": true, 
+                            "username": result.data.username, 
+                            "userId": result.data.id
+                          })
+            }
+         })
   }
 
   goToSignUp(){
@@ -301,23 +220,8 @@ class App extends React.Component {
     })
   }
 
-  logout(){
-    console.log('loggin out')
-    axios.get('/logout')
-      .then(() => {
-      this.setState({
-        isLoggedIn: false, 
-        isSignedUp: true
-      }, () => {
-        this.getIndex()
-      })
-      })
-  }
-
 
   render() {
-    if (this.state.mounted) {
-
     if (this.state.isLoggedIn === false && this.state.isSignedUp === true) {
       return (
         <Login handleLogin={this.handleLogin} goToSignUp={this.goToSignUp}/>
@@ -327,67 +231,49 @@ class App extends React.Component {
         <SignUp handleSignUp={this.handleSignUp} goToLogin={this.goToLogin}/>
       )
     } else {
-       return (
-          <div style={this.appStyle}>
-            <NavTopBar
-              getUserInfo={this.getUserInfo}
-              getLeaderBoard={this.getLeaderBoard}
-              username={this.state.username}
-              createdAt={this.state.createdAt}
-              gamesPlayed={this.state.gamesPlayed}
-              totalCorrect={this.state.totalCorrect}
-              totalIncorrect={this.state.totalIncorrect}
-              highScore={this.state.highScore}
-              bestTime={this.state.bestTime}
-              recordsList={this.state.recordsList}
-              totalUserCorrect={this.state.totalUserCorrect}
-              totalUserIncorrect={this.state.totalUserIncorrect}
-              logout={this.logout}
-              style={this.navTopBarStyle}
-            />
-            <NavSideBar
-              style={this.NavSideBarStyle}
-              inProgressBool = {this.state.inProgressBool}
-              startNewGame= {this.startNewGame}
-              inProgressBoolUpdate = {this.inProgressBoolUpdate}
-              questionsLeftUpdate = {this.questionsLeftUpdate}
-              choosePathMode = {this.state.choosePathMode}
-            />
-            <Game
-              style={this.GameStyle}
-              problemType = {this.state.problemType}
-              timeElapsed = {this.state.timeElapsed}
-              numberCorrect = {this.state.numberCorrect}
-              numberIncorrect = {this.state.numberIncorrect}
-              questionsLeft = {this.state.questionsLeft}
-              inProgressBool = {this.state.inProgressBool}
-              correctArray = {this.state.correctArray}
-              incorrectArray = {this.state.incorrectArray}
-              userId = {this.state.userId}
-              username = {this.state.username}
-              numberCorrectUpdate = {this.numberCorrectUpdate}
-              numberIncorrectUpdate = {this.numberIncorrectUpdate}
-              resetCounts = {this.resetCounts}
-              questionsLeftUpdate = {this.questionsLeftUpdate}
-              inProgressBoolUpdate = {this.inProgressBoolUpdate}
-              correctArrayUpdate = {this.correctArrayUpdate}
-              incorrectArrayUpdate = {this.incorrectArrayUpdate}
-              choosePathMode = {this.state.choosePathMode}
-              showChoosePathMode = {this.showChoosePathMode}
-              startNewGame= {this.startNewGame}
-              updateUserInfo = {this.updateUserInfo}
-              newQuestion = {this.newQuestion}
-              questionString = {this.state.questionString}
-              answers = {this.state.answers}
-              correctAnswer = {this.state.correctAnswer}
-            />
-          </div>
-       )
+      return (
+        <div style={this.AppStyle}>
+          <NavTopBar
+            getUserInfo={this.getUserInfo.bind(this)}
+            getLeaderBoard={this.getLeaderBoard.bind(this)}
+          />
+          <UserInfo/>
+          <LeaderBoard/>
+          <NavSideBar
+            style={this.NavSideBarStyle}
+            inProgressBool = {this.state.inProgressBool}
+            startNewGame= {this.startNewGame.bind(this)}
+            inProgressBoolUpdate = {this.inProgressBoolUpdate.bind(this)}
+            problemTypeUpdate = {this.problemTypeUpdate.bind(this)}
+            questionsLeftUpdate = {this.questionsLeftUpdate.bind(this)}
+          />
+          <Game
+            style={this.GameStyle}
+            problemType = {this.state.problemType}
+            timeElapsed = {this.state.timeElapsed}
+            numberCorrect = {this.state.numberCorrect}
+            numberIncorrect = {this.state.numberIncorrect}
+            questionsLeft = {this.state.questionsLeft}
+            inProgressBool = {this.state.inProgressBool}
+            correctArray = {this.state.correctArray}
+            incorrectArray = {this.state.incorrectArray}
+            numberCorrectUpdate = {this.numberCorrectUpdate.bind(this)}
+            numberIncorrectUpdate = {this.numberIncorrectUpdate.bind(this)}
+            resetCounts = {this.resetCounts.bind(this)}
+            questionsLeftUpdate = {this.questionsLeftUpdate.bind(this)}
+            inProgressBoolUpdate = {this.inProgressBoolUpdate.bind(this)}
+            correctArrayUpdate = {this.correctArrayUpdate.bind(this)}
+            incorrectArrayUpdate = {this.incorrectArrayUpdate.bind(this)}
+          />
+          <InfoSideBar
+            style={this.InfoSideBarStyle}
+            problemType = {this.state.problemType}
+            inProgressBool = {this.state.inProgressBool}
+          />
+        </div>
+      )
     }
-  } else {
-    return (<span></span>)
   }
-}
 }
 
 ReactDOM.render(<App />, document.getElementById('mount'));

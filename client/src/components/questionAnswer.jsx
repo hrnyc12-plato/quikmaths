@@ -3,28 +3,29 @@ import React from 'react'
 class QuestionAnswer extends React.Component {
 	constructor(props){
 		super(props)
+		this.state = {
+			questionsLeft: this.props.questionsLeft
+		}
 		this.findCorrect = this.findCorrect.bind(this)
 	}
 
 	findCorrect(answer, question){
-		this.props.questionsLeftUpdate((questionsLeft)=> {
-			if (answer === this.props.correctAnswer){
-				this.props.correctArrayUpdate(question)
-				this.props.numberCorrectUpdate()
-			} else {
-				this.props.incorrectArrayUpdate(question)
-				this.props.numberIncorrectUpdate()
-			}
-			if (questionsLeft === 0){
-				this.props.finalTimeUpdate(()=> {
-					this.props.saveNewScore()
-					console.log('final time update')
-				})
-				this.props.inProgressBoolUpdate()
-			} else {
-				this.props.newQuestion()
-			}
-		})
+		if (answer === this.props.correctAnswer){
+			this.props.correctArrayUpdate(question)
+			this.props.numberCorrectUpdate()
+			this.props.questionsLeftUpdate()
+		} else {
+			this.props.incorrectArrayUpdate(question)
+			this.props.numberIncorrectUpdate()
+			this.props.questionsLeftUpdate()
+		}
+		if (this.props.questionsLeft === 1){
+			this.props.finalTimeUpdate()
+			this.props.saveNewScore()
+			this.props.inProgressBoolUpdate()
+		} else {
+			this.props.newQuestion()
+		}
 	}
 
 	render(){
@@ -39,7 +40,7 @@ class QuestionAnswer extends React.Component {
 						findCorrect={this.findCorrect}
 					/>)}
 				</div>
-				<Timer timeElapsed={this.props.timeElapsed} />
+				<Timer time={this.props.timeElapsed} />
 				<div>Questions Left: {this.props.questionsLeft}</div>
 			</div>
 		)
@@ -47,13 +48,11 @@ class QuestionAnswer extends React.Component {
 }
 
 const Answer = (props) => (
-	<button style={{cursor:'pointer'}} onClick={() => {
-		props.findCorrect(props.answer, props.question)
-	}}>{props.answer}</button>
+	<button style={{cursor:'pointer'}} onClick={() => props.findCorrect(props.answer, props.question)}>{props.answer}</button>
 )
 
 const Timer = (props) => (
-	<span>Time Elapsed: {(props.timeElapsed/1000).toFixed(2)}</span>
+	<span>Time Elapsed: {props.time}</span>
 )
 
 export default QuestionAnswer

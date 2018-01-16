@@ -33,10 +33,11 @@ const checkUser = function(req, res, next){
   }
 };
 
-const createSession = function(req, res, newUser) {
+const createSession = function(req, res, userObj) {
   return req.session.regenerate(function() {
-      req.session.user = newUser;
-      res.json(newUser)
+      req.session.user = userObj.username;
+      console.log('userObj from createSession', userObj);
+      res.json(userObj)
     });
 };
 
@@ -66,7 +67,7 @@ app.post('/signup', (req, res) => {
             if (err){
               res.json(false)
             } else {
-              createSession(req, res, userObj.username)
+              createSession(req, res, userObj)
             }
           });
         });
@@ -78,12 +79,13 @@ app.post('/signup', (req, res) => {
 
 app.post('/login', (req, res) => {
   db.getUserByName(req.body.username, (exists) => {
+    console.log('Exists', exists);
     if (!exists) {
       res.json(false);
     } else {
       bcrypt.compare(req.body.password, exists[0].dataValues.password, (err, result) => {
         if (result) {
-          createSession(req, res, exists[0].dataValues.username)
+          createSession(req, res, exists[0].dataValues)
         } else {
           console.log(result)
           res.json(false);
@@ -119,7 +121,7 @@ app.post('/user', (req, res) => {
 */
 app.post('/newRecord', (req, res) => {
   db.addNewRecord(req.body);
-  db.updateUser(req.body);
+  // db.updateUser(req.body);
   res.send('Record Added to Database');
 })
 
@@ -146,6 +148,10 @@ app.post('/updateUser', (req, res) => {
   });
 })
 
+app.put('/profilePicture', (req, res) => {
+  console.log('request from profile picture put request', req.body);
+  db.updateProfilePicture(req.body);
+})
 // return all records for a user
 /*
 {

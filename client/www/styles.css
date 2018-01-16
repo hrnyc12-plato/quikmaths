@@ -1,41 +1,34 @@
-.profilePicture {
-    height: 200px;
-    width: 200px;
-    opacity: 1;
-    display: block;
-    transition: .5s ease;
-    backface-visibility: hidden;
-}
-
-.profilePictureContainer {
-  
+ .profilePictureContainer {
+  height: auto;
+  width: 275px;
+  opacity: 1;
+  display: block;
+  transition: .5s ease;
+  backface-visibility: hidden;
 }
 
 .image {
-    opacity: 1;
-    display: block;
-    width: 100%;
-    height: auto;
-    transition: .5s ease;
-    backface-visibility: hidden;
-  }
+  opacity: 1;
+  display: block;
+  width: 275px;
+  height: auto;
+  transition: .5s ease;
+  backface-visibility: hidden;
+}
   
-  .middle {
-    transition: .5s ease;
-    opacity: 0;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    text-align: center;
-  }
+.middle {
+  transition: .5s ease;
+  opacity: 0;
+  padding:5px;
+  text-align: center;
+  vertical-align: center;
+}
 
-.container:hover .image {
-    opacity: 0.3;
-  }
+.profilePictureContainer:hover .image {
+  opacity: 0.3;
+}
   
-.container:hover .middle {
+.profilePictureContainer:hover .middle {
   opacity: 1;
 }
   
@@ -43,5 +36,9 @@
   background-color: #4CAF50;
   color: white;
   font-size: 16px;
-  padding: 16px 32px;
+}
+
+.userDataTable {
+  margin-top:20px;
+  padding:20px;
 }

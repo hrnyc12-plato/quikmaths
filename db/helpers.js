@@ -70,10 +70,17 @@ const updateUser = function(userInfo, cb) {
     var newHighScore = Math.max(userInfo.highScore, results[0].dataValues.highScore)
     var newTime = Math.min(userInfo.bestTime, results[0].dataValues.bestTime)
         User.find({
+<<<<<<< HEAD
           where: {
             username: userInfo.username
           }
         }).then((user) => {
+=======
+      where: {
+        username: userInfo.username
+      }
+    }).then((user) => {
+>>>>>>> changes to config and debugged helper.js
       user.update({
         totalCorrect: totalCorrect,
         totalIncorrect: totalIncorrect,

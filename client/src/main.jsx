@@ -107,6 +107,7 @@ class App extends React.Component {
   getIndex(){
     axios.get('/git')
          .then((result) => {
+           console.log('result from get index', result);
            if (result.data !== false){
             this.setState({
               isLoggedIn: true, 
@@ -219,7 +220,7 @@ class App extends React.Component {
       username: this.state.username
     })
     .then((response)=> {
-      console.log(response);
+      console.log('response from post request', response);
       this.setState({
         username: response.data[0].username,
         createdAt: response.data[0].createdAt,

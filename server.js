@@ -140,6 +140,7 @@ app.post('/newRecord', (req, res) => {
 */
 
 app.post('/updateUser', (req, res) => {
+  console.log('updateUser, req.body', req.body);
   db.updateUser(req.body, (user) => {
     res.json(user)
   });

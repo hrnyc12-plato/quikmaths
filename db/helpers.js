@@ -61,33 +61,30 @@ const getAllUsers = function(cb) {
       })
 }
 //userInfo not defined yet; might have to refactor based on what's passed in 
+
 const updateUser = function(userInfo, cb) {
-  //get previous user stats
-  getUserByName(userInfo.username, function(results){
-    let totalCorrect = results[0].dataValues.totalCorrect
-    let totalIncorrect = results[0].dataValues.totalIncorrect
-    let gamesPlayed = results[0].dataValues.gamesPlayed
-    let highScore = results[0].dataValues.highScore
-    let bestTime = results[0].dataValues.bestTime
-
-   //add new users stats to previous user stats
-    let newTotalCorrect = totalCorrect + userInfo.totalCorrect 
-    let newTotalIncorrect = totalIncorrect + userInfo.totalIncorrect 
-    let newGamesPlayed = gamesPlayed + 1
-    let newHighScore = Math.max(highScore, userInfo.highScore)
-    let newBestTime = Math.min(bestTime, userInfo.bestTime)
-
-    //update with new stats
-    User.update({
-      "totalCorrect": newTotalCorrect, 
-      "totalIncorrect": newTotalIncorrect, 
-      "gamesPlayed": newGamesPlayed, 
-      "highScore": newHighScore, 
-      "bestTime": newBestTime
-    }, {where : {"username": userInfo.username}}).then(() => cb())
+  getUserByName(userInfo.username, function(results) {
+    var totalCorrect = results[0].dataValues.totalCorrect + userInfo.numberCorrect;
+    var totalIncorrect = results[0].dataValues.totalIncorrect + userInfo.numberIncorrect;
+    var gamesPlayed = results[0].dataValues.gamesPlayed + 1;
+    var newHighScore = Math.max(userInfo.highScore, results[0].dataValues.highScore)
+    var newTime = Math.min(userInfo.bestTime, results[0].dataValues.bestTime)
+        User.find({
+          where: {
+            username: userInfo.username
+          }
+        }).then((user) => {
+      user.update({
+        totalCorrect: totalCorrect,
+        totalIncorrect: totalIncorrect,
+        gamesPlayed: gamesPlayed,
+        highScore: newHighScore,
+        bestTime: newTime
+      }).then(user => cb(user))
+    })
   })
-
 }
+
 
 
 
@@ -98,8 +95,8 @@ const addNewRecord = function(recordInfo) {
     "numberCorrect": recordInfo.numberCorrect,
     "numberIncorrect": recordInfo.numberIncorrect,
     "score": recordInfo.score,
-    "userId": recordInfo.userId,
-    "operate": recordInfo.operator
+    "username": recordInfo.username,
+    "operator": recordInfo.operator
   })
     .save()
     .then()
@@ -166,5 +163,6 @@ module.exports = {
   getAllRecordsForOperator : getAllRecordsForOperator,
   sortRecordsByScore : sortRecordsByScore,
   sortRecordsByTime : sortRecordsByTime,
-  getAllRecords : getAllRecords
+  getAllRecords : getAllRecords,
+  updateUser : updateUser
 }

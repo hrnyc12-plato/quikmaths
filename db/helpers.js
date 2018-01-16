@@ -85,7 +85,17 @@ const updateUser = function(userInfo, cb) {
   })
 }
 
-
+const updateProfilePicture = function (userImage, cb) {
+   User.find({
+    where: {
+      username: userImage.username
+    }
+  }).then((user) => {
+    user.update({
+      profilePicture: userImage.uploadedFileCloudinaryUrl
+    });
+  });
+}
 
 
 const addNewRecord = function(recordInfo) {
@@ -164,5 +174,6 @@ module.exports = {
   sortRecordsByScore : sortRecordsByScore,
   sortRecordsByTime : sortRecordsByTime,
   getAllRecords : getAllRecords,
-  updateUser : updateUser
+  updateUser : updateUser,
+  updateProfilePicture: updateProfilePicture
 }

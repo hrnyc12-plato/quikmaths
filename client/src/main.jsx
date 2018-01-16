@@ -34,11 +34,12 @@ class App extends React.Component {
       username: null,
       userId: null,
       createdAt: null,
-      gamesPlayed: null,
+      gamesPlayed: 0,
       totalCorrect: null,
       totalIncorrect: null,
       highScore: null,
       bestTime: null,
+      profilePicture:null,
       // array of leaderboard records
       recordsList: [],
       // render login page conditionally
@@ -229,6 +230,7 @@ class App extends React.Component {
         totalIncorrect: response.data[0].totalIncorrect,
         highScore: response.data[0].highScore,
         bestTime: response.data[0].bestTime,
+        profilePicture: response.data[0].profilePicture
       })
     })
     .catch((error)=> {
@@ -242,9 +244,9 @@ class App extends React.Component {
       bestTime: object.data.bestTime,
       totalUserIncorrect: object.data.totalIncorrect,
       totalUserCorrect: object.data.totalCorrect,
-      gamesPlayed: object.data.gamesPlayed
-
-    }, () => console.log('totalUserCorrect', this.state.totalUserCorrect) )
+      gamesPlayed: object.data.gamesPlayed,
+      profilePicture:  object.data.profilePicture
+    });
   }
   
   getLeaderBoard() {
@@ -265,11 +267,12 @@ class App extends React.Component {
   handleSignUp(obj){
     axios.post('/signup', obj)
       .then((result) => {
+        console.log('result.datXXXXXa', result.data);
         if(result.data === false) {
           alert('username already exists');
         } else {
           this.setState({"isLoggedIn" : true, 
-          "username" : result.data}) 
+          "username" : result.data.username}) 
         }
       })
   }
@@ -282,7 +285,9 @@ class App extends React.Component {
         } else {
           this.setState({"isSignedUp": true, 
           "isLoggedIn": true, 
-          "username": result.data}, () => {
+          "username": result.data.username,
+          "profilePicture": result.data.profilePicture
+            }, () => {
             this.getUserInfo()
           })
         }
@@ -306,8 +311,39 @@ class App extends React.Component {
     axios.get('/logout')
       .then(() => {
       this.setState({
-        isLoggedIn: false, 
-        isSignedUp: true
+        problemType: '+',
+        timeElapsed: 0,
+        startTime: 0,
+        numberCorrect: 0,
+        numberIncorrect: 0,
+        questionsLeft: 0,
+        inProgressBool: false,
+        correctArray: [],
+        incorrectArray: [],
+        //state for newQuestion
+        questionString: [],
+        answers: [],
+        correctAnswer: undefined,
+        // states for userinfo
+        username: null,
+        userId: null,
+        createdAt: null,
+        gamesPlayed: null,
+        totalCorrect: null,
+        totalIncorrect: null,
+        highScore: null,
+        bestTime: null,
+        profilePicture:null,
+        // array of leaderboard records
+        recordsList: [],
+        // render login page conditionally
+        isLoggedIn: false,
+        // render game or chooseyourpath conditionally
+        choosePathMode: true,
+        isSignedUp: true,
+        totalUserCorrect: null,
+        totalUserIncorrect: null,
+        mounted: false
       }, () => {
         this.getIndex()
       })
@@ -344,6 +380,7 @@ class App extends React.Component {
               totalUserIncorrect={this.state.totalUserIncorrect}
               logout={this.logout}
               style={this.navTopBarStyle}
+              profilePicture={this.state.profilePicture}
             />
             <NavSideBar
               style={this.NavSideBarStyle}
@@ -380,6 +417,7 @@ class App extends React.Component {
               questionString = {this.state.questionString}
               answers = {this.state.answers}
               correctAnswer = {this.state.correctAnswer}
+              getUserInfo={this.getUserInfo}
             />
           </div>
        )

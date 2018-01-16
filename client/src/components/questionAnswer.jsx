@@ -18,7 +18,6 @@ class QuestionAnswer extends React.Component {
 			if (questionsLeft === 0){
 				this.props.finalTimeUpdate(()=> {
 					this.props.saveNewScore()
-					console.log('final time update')
 				})
 				this.props.inProgressBoolUpdate()
 			} else {

@@ -99,6 +99,7 @@ class NavTopBar extends React.Component {
           totalUserCorrect={this.props.totalUserCorrect}
           totalUserIncorrect={this.props.totalUserIncorrect}
           logout = {this.props.logout}
+          profilePicture = {this.props.profilePicture}
         />
         <LeaderBoard
           selectedTab={this.state.selectedTab}

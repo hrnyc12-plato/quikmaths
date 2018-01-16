@@ -77,7 +77,8 @@ class Game extends React.Component {
         'username': this.props.username,
         'operator': this.props.problemType
       })
-     
+     console.log('props', this.props);
+     console.log('state', this.state);
     axios.post('/updateUser', {
       'username': this.props.username,
       'highScore': newScore,

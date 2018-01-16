@@ -64,14 +64,16 @@ const getAllUsers = function(cb) {
 
 const updateUser = function(userInfo, cb) {
   getUserByName(userInfo.username, function(results) {
-    var totalCorrect = results[0].dataValues.totalCorrect + userInfo.numberCorrect
-    var totalIncorrect = results[0].dataValues.totalIncorrect + userInfo.numberIncorrect
-    var gamesPlayed = results[0].dataValues.gamesPlayed + 1
+    var totalCorrect = results[0].dataValues.totalCorrect + userInfo.numberCorrect;
+    var totalIncorrect = results[0].dataValues.totalIncorrect + userInfo.numberIncorrect;
+    var gamesPlayed = results[0].dataValues.gamesPlayed + 1;
     var newHighScore = Math.max(userInfo.highScore, results[0].dataValues.highScore)
     var newTime = Math.min(userInfo.bestTime, results[0].dataValues.bestTime)
         User.find({
-      username: userInfo.username,
-    }).then((user) => {
+          where: {
+            username: userInfo.username
+          }
+        }).then((user) => {
       user.update({
         totalCorrect: totalCorrect,
         totalIncorrect: totalIncorrect,

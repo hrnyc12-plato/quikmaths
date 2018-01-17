@@ -27,7 +27,7 @@ const operations = {
 };
 
 // default max digit is 4
-const numGenerator = (max = 4, min = 0) => {
+const numGenerator = (max = 5, min = 0) => {
   let digits = Math.ceil(Math.random() * (max - min) + min);
   let numString = ''
   for (let i = digits; i > 0; i--) {
@@ -91,6 +91,21 @@ const roundDigits = (answerArray) => {
   })
 }
 
+
+
+const questionGen = (operator, max, min) => {
+  // generate numbers
+  let num1 = numGenerator(max, min);
+  let num2 = numGenerator(max, min);
+  return answerGen([operator, num1, num2]);
+};
+
+const randomOperator = function() {
+  const operators = ['*','+', '/','-'];
+  const random = Math.floor(Math.random()*4);
+  return operators[random];
+};
+
 const answerGen = (question) => {
   // use matching function from operations
   // question format [operator, num1, num2]
@@ -102,11 +117,37 @@ const answerGen = (question) => {
   return {'question': question, 'choices': answers, 'correctAnswer': Number(answer.toFixed(3))};
 };
 
-const questionGen = (operator, max, min) => {
-  // generate numbers
-  let num1 = numGenerator(max, min);
-  let num2 = numGenerator(max, min);
-  return answerGen([operator, num1, num2]);
+const questionGenLevel3 = () => {
+  const operator1 = randomOperator();
+  const operator2 = randomOperator();
+  const operator3 = randomOperator();
+
+  const num1 = numGenerator(1, 0);
+  const num2 = numGenerator(2, 0);
+  const num3 = numGenerator(3, 1);
+  const num4 = numGenerator(3, 0);
+
+  const operation1 = operations[operator1];
+  const operation2 = operations[operator2];
+  const answer1 = Number(operation1(num1, num2));
+  const answer2 = Number(operation2(answer1, num3).toFixed(3));
+  const questionString = `[(${num1} ${operator1} ${num2}) ${operator2} ${num3}] ${operator3} ${num4}`;
+  
+  const questionObject = answerGen([operator3, answer2, num4]);
+  questionObject.question = questionString;
+  return questionObject;
 };
 
-module.exports = questionGen;
+module.exports.questionGen = questionGen;
+module.exports.questionGenLevel3 = questionGenLevel3;
+
+
+
+
+
+
+
+
+
+
+

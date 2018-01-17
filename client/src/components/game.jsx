@@ -31,7 +31,6 @@ class Game extends React.Component {
     })
   }
 
-
   determineNewScore (time, correctAnswers, incorrectAnswers) {
     let answerRatio = correctAnswers / incorrectAnswers
     let preTotal = answerRatio -= time
@@ -88,16 +87,8 @@ class Game extends React.Component {
     }).then((user) => this.props.updateUserInfo(user))
   }
 
-
-
-
-
   render() {
-
-
-
     if (!this.props.choosePathMode) {
-
       if (this.props.questionsLeft === 0) {
         return (
           <Statistics 
@@ -134,7 +125,7 @@ class Game extends React.Component {
         )
       }
     } else {
-      return null;
+      return null; 
     }
   }
 }

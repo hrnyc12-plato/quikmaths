@@ -8,7 +8,7 @@ import LeaderBoard from './components/leaderBoard.jsx';
 import UserInfo from './components/userInfo.jsx';
 import Login from './components/login.jsx';
 import SignUp from './components/signUp.jsx';
-import questionGen from '../../problemGen.js';
+import questions from '../../problemGen.js';
 import _ from 'underscore';
 
 class Main extends React.Component {
@@ -25,6 +25,7 @@ class Main extends React.Component {
       correctArray: [],
       incorrectArray: [],
       //state for newQuestion
+      level: '1',
       questionString: [],
       answers: [],
       correctAnswer: undefined,
@@ -80,16 +81,21 @@ class Main extends React.Component {
     this.numberIncorrectUpdate = this.numberIncorrectUpdate.bind(this)
     this.resetCounts = this.resetCounts.bind(this)
     this.questionsLeftUpdate = this.questionsLeftUpdate.bind(this)
-    this.inProgressBoolUpdate = this.inProgressBoolUpdate.bind(this)
+    // this.inProgressBoolUpdate = this.inProgressBoolUpdate.bind(this)
     this.correctArrayUpdate = this.correctArrayUpdate.bind(this)
     this.incorrectArrayUpdate = this.incorrectArrayUpdate.bind(this)
     this.showChoosePathMode = this.showChoosePathMode.bind(this)
-    this.startNewGame = this.startNewGame.bind(this)
+    // this.startNewGame = this.startNewGame.bind(this)
     this.logout = this.logout.bind(this)
     this.updateUserInfo = this.updateUserInfo.bind(this)
+
     this.newQuestion = this.newQuestion.bind(this);
+
     this.quitGame = this.quitGame.bind(this);
     this.filterLeaderboard = this.filterLeaderboard.bind(this);
+
+    this.levelHandler = this.levelHandler.bind(this);
+
   }
 
   componentDidMount(){
@@ -107,12 +113,31 @@ class Main extends React.Component {
   }
 
   newQuestion() {
-    let infoObject = questionGen(this.state.problemType, 3, 1);
-    this.setState({
-      questionString: `${infoObject.question[1]} ${infoObject.question[0]} ${infoObject.question[2]}`,
-      answers: _.shuffle(infoObject.choices),
-      correctAnswer: infoObject.correctAnswer
-    })
+    const level = this.state.level;
+    if(level === '1') {
+      var infoObject = questions.questionGen(this.state.problemType, 3, 0);
+      this.setState({
+        questionString: `${infoObject.question[1]} ${infoObject.question[0]} ${infoObject.question[2]}`,
+        answers: _.shuffle(infoObject.choices),
+        correctAnswer: infoObject.correctAnswer
+      })
+    } 
+    if(level === '2') {
+      var infoObject = questions.questionGen(this.state.problemType, 5, 2);
+      this.setState({
+        questionString: `${infoObject.question[1]} ${infoObject.question[0]} ${infoObject.question[2]}`,
+        answers: _.shuffle(infoObject.choices),
+        correctAnswer: infoObject.correctAnswer
+      })
+    } 
+    if(level === '3') {
+      var infoObject = questions.questionGenLevel3();
+      this.setState({
+        questionString: `${infoObject.question}`,
+        answers: _.shuffle(infoObject.choices),
+        correctAnswer: infoObject.correctAnswer
+      })
+    }   
   }
 
   filterLeaderboard (operator) {
@@ -160,7 +185,6 @@ class Main extends React.Component {
   }
 
   startTimer() {
-
     setTimeout(() => {
       if (this.state.inProgressBool) {
         this.setState({
@@ -180,7 +204,8 @@ class Main extends React.Component {
         this.startTimer()
       } else {
         this.setState({
-          timeElapsed: 0
+          timeElapsed: 0,
+          level: '1'
         })
       }
     })
@@ -256,6 +281,11 @@ class Main extends React.Component {
     })
   }
 
+  levelHandler(e) {
+    e.preventDefault();
+    this.setState({level: e.target.value}, () => console.log('level selected is: ', this.state.level));
+  }
+
   startNewGame(operator) {
     this.setState({
       questionsLeft: 10, 
@@ -263,9 +293,9 @@ class Main extends React.Component {
       choosePathMode: false,
       startTime: Date.now()
     }, () => {
-      this.newQuestion(operator);
-      this.resetCounts()
-      this.inProgressBoolUpdate()
+      this.newQuestion();
+      this.resetCounts();
+      this.inProgressBoolUpdate();
     })
   }
 
@@ -425,6 +455,7 @@ class Main extends React.Component {
             <NavSideBar
               style={this.NavSideBarStyle}
               inProgressBool = {this.state.inProgressBool}
+              levelHandler={this.levelHandler}
               startNewGame= {this.startNewGame}
               inProgressBoolUpdate = {this.inProgressBoolUpdate}
               questionsLeftUpdate = {this.questionsLeftUpdate}

@@ -96,14 +96,8 @@ class Game extends React.Component {
     this.props.quitGame();
   }
 
-
-
   render() {
-
-
-
     if (!this.props.choosePathMode) {
-
       if (this.props.questionsLeft === 0) {
         return (
           <Statistics 
@@ -141,7 +135,7 @@ class Game extends React.Component {
         )
       }
     } else {
-      return null;
+      return null; 
     }
   }
 }

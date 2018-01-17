@@ -119,7 +119,7 @@ app.post('/user', (req, res) => {
 */
 app.post('/newRecord', (req, res) => {
   db.addNewRecord(req.body);
-  db.updateUser(req.body);
+  // db.updateUser(req.body);
   res.send('Record Added to Database');
 })
 

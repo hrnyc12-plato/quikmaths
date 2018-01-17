@@ -31,7 +31,6 @@ class Game extends React.Component {
     })
   }
 
-
   determineNewScore (time, correctAnswers, incorrectAnswers) {
     let answerRatio = correctAnswers / incorrectAnswers
     let preTotal = answerRatio -= time
@@ -92,7 +91,10 @@ class Game extends React.Component {
     })
   }
 
-
+  onQuitClick() {
+    console.log('qqqq');
+    this.props.quitGame();
+  }
 
 
 
@@ -134,6 +136,7 @@ class Game extends React.Component {
               finalTimeUpdate={this.finalTimeUpdate}
               saveNewScore={this.saveNewScore}
             />
+            <button onClick={this.onQuitClick.bind(this)}>Quit</button>
           </div>
         )
       }

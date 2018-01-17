@@ -36,7 +36,6 @@ const checkUser = function(req, res, next){
 const createSession = function(req, res, userObj) {
   return req.session.regenerate(function() {
       req.session.user = userObj.username;
-      console.log('userObj from createSession', userObj);
       res.json(userObj)
     });
 };
@@ -193,15 +192,15 @@ app.post('/allRecords', (req, res) => {
   const operator = req.body.operator;
 
   db.getAllRecords(records => {
-    if (operator) {
+    if (operator !== '') {
       records = records.filter(record => record.operator === operator);
     }
     if (ascending) {
       records = records.sort((a, b) => {return a.score - b.score});
-      res.json(records.slice(0, 100));
+      res.json(records.slice(0, 10));
     } else {
       records = records.sort((a, b) => {return b.score - a.score});
-      res.json(records.slice(0, 100));
+      res.json(records.slice(0, 10));
     }
   });
 })

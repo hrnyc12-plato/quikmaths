@@ -17,7 +17,7 @@ class NavSideBar extends React.Component {
 
   render(){
     if (this.props.choosePathMode) {
-      if (this.props.inProgressBool){
+      if (this.props.inProgressBool) {
         return (<span></span>)
       } else {
         return (

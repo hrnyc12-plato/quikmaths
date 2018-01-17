@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import axios from 'axios';
 import Game from './components/game.jsx';
 import NavTopBar from './components/navTopBar.jsx';
@@ -12,8 +11,7 @@ import SignUp from './components/signUp.jsx';
 import questionGen from '../../problemGen.js';
 import _ from 'underscore';
 
-
-class App extends React.Component {
+class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -96,6 +94,16 @@ class App extends React.Component {
 
   componentDidMount(){
     this.getIndex()
+  }
+  
+  componentWillMount() {
+    this.setupFirebase()
+  }
+
+  setupFirebase () {
+    axios.get('/firebaseConfig').then((response) => {
+      firebase.initializeApp(response.data);
+    })
   }
 
   newQuestion() {
@@ -395,6 +403,8 @@ class App extends React.Component {
        return (
           <div style={this.appStyle}>
             <NavTopBar
+              topLevelState={this.state}
+              db={firebase}
               getUserInfo={this.getUserInfo}
               getLeaderBoard={this.getLeaderBoard}
               username={this.state.username}
@@ -459,6 +469,4 @@ class App extends React.Component {
 }
 }
 
-ReactDOM.render(<App />, document.getElementById('mount'));
-
-export default App;
+export default Main;

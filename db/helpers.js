@@ -1,5 +1,7 @@
 const User = require('./models/user.js')
 const Record = require('./models/records.js')
+const Badges = require('./models/badges')
+const UserBadges = require('./models/userBadges')
 
 const doesUserExist = function(username, cb) {
   User.findAll({

@@ -102,6 +102,7 @@ class NavTopBar extends React.Component {
           profilePicture = {this.props.profilePicture}
         />
         <LeaderBoard
+          filterLeaderboard={this.props.filterLeaderboard}
           selectedTab={this.state.selectedTab}
           toggleTab={this.state.toggleTab}
           recordsList={this.props.recordsList}

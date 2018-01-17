@@ -17,7 +17,7 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      problemType: '+',
+      problemType: '',
       timeElapsed: 0,
       startTime: 0,
       numberCorrect: 0,
@@ -90,6 +90,8 @@ class App extends React.Component {
     this.logout = this.logout.bind(this)
     this.updateUserInfo = this.updateUserInfo.bind(this)
     this.newQuestion = this.newQuestion.bind(this);
+    this.quitGame = this.quitGame.bind(this);
+    this.filterLeaderboard = this.filterLeaderboard.bind(this);
   }
 
   componentDidMount(){
@@ -105,7 +107,31 @@ class App extends React.Component {
     })
   }
 
-  getIndex(){
+  filterLeaderboard (operator) {
+    this.setState({problemType: operator},() => {
+      this.getLeaderBoard(this.state.problemType);
+    });
+  }
+
+  
+  getLeaderBoard(operator = '') {
+    axios.post('/allRecords', {
+        operator: operator,
+        ascending: false
+    })
+    .then((response)=> {
+      this.setState({
+        recordsList: response.data
+      })
+    })
+    .catch((error)=> {
+      console.log(error);
+    });
+  }
+
+
+
+  getIndex() {
     axios.get('/git')
          .then((result) => {
            console.log('result from get index', result);
@@ -150,6 +176,25 @@ class App extends React.Component {
         })
       }
     })
+  }
+
+  quitGame() {
+    this.setState({
+      questionsLeft: 0,
+      problemType: '+',
+      choosePathMode: true,
+      timeElapsed: 0,
+      startTime: 0,
+      questionString: [],
+      answers: [],
+      correctAnswer: undefined,
+      numberCorrect: 0,
+      numberIncorrect: 0,
+      questionsLeft: 0,
+      inProgressBool: false,
+      correctArray: [],
+      incorrectArray: []
+    });
   }
 
   numberCorrectUpdate() {
@@ -248,26 +293,10 @@ class App extends React.Component {
       profilePicture:  object.data.profilePicture
     });
   }
-  
-  getLeaderBoard() {
-    axios.post('/allRecords', {
-        operator: this.props.problemType,
-        ascending: false
-    })
-    .then((response)=> {
-      this.setState({
-        recordsList: response.data
-      })
-    })
-    .catch((error)=> {
-      console.log(error);
-    });
-  }
 
   handleSignUp(obj){
     axios.post('/signup', obj)
       .then((result) => {
-        console.log('result.datXXXXXa', result.data);
         if(result.data === false) {
           alert('username already exists');
         } else {
@@ -381,6 +410,7 @@ class App extends React.Component {
               logout={this.logout}
               style={this.navTopBarStyle}
               profilePicture={this.state.profilePicture}
+              filterLeaderboard={this.filterLeaderboard}
             />
             <NavSideBar
               style={this.NavSideBarStyle}
@@ -392,6 +422,7 @@ class App extends React.Component {
             />
             <Game
               style={this.GameStyle}
+              quitGame={this.quitGame}
               problemType = {this.state.problemType}
               timeElapsed = {this.state.timeElapsed}
               numberCorrect = {this.state.numberCorrect}

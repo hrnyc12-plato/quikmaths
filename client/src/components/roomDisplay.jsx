@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import _ from 'underscore';
 import CreateRoom from './createRoom.jsx';
+import questionGen from '../../../problemGen.js';
 
 class RoomDisplay extends React.Component {
   constructor(props) {
@@ -58,8 +59,25 @@ class RoomDisplay extends React.Component {
       let dbConnection = this.props.db.database().ref('/rooms');
       newRoom.waiting = true;
       newRoom.gameComplete = false;
+      newRoom.gameInProgress = false;
+
+      newRoom.gameInfo = this.generateFullGame(newRoom.operator);
+
       dbConnection.push(newRoom);
     }
+  }
+
+  generateFullGame (problemType) {
+    let fullGame = [];
+    for (var i = 0; i < 10; i++) {
+      let infoObject = questionGen(problemType, 3, 1);
+      fullGame.push({
+        questionString: `${infoObject.question[1]} ${infoObject.question[0]} ${infoObject.question[2]}`,
+        answers: _.shuffle(infoObject.choices),
+        correctAnswer: infoObject.correctAnswer
+      })
+    }
+    return fullGame;
   }
 
   render() {

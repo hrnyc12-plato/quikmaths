@@ -34,7 +34,9 @@ class RoomDisplay extends React.Component {
   }
 
   handleSubmit () {
-    if (this.state.name.length && this.state.operator.length) {
+    if (this.state.name.includes(' ')) {
+      window.alert('No spaces please');
+    } else if (this.state.name.length && this.state.operator.length) {
       this.props.addRoom(this.state);
     } else {
       window.alert('Both fields are required!');

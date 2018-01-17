@@ -2,6 +2,7 @@ import React from 'react';
 import UserInfo from './userInfo.jsx';
 import LeaderBoard from './leaderBoard.jsx';
 import InfoSideBar from './infoSideBar.jsx';
+import RoomDisplay from './roomDisplay.jsx';
 
 class NavTopBar extends React.Component {
   constructor(props){
@@ -12,7 +13,7 @@ class NavTopBar extends React.Component {
     }
     this.listStyle = {
       display: 'grid',
-      gridTemplateColumns: '1fr 1fr 1fr',
+      gridTemplateColumns: '1fr 1fr 1fr 1fr',
       listStyleType: 'none',
       marginLeft: '-40px',
       marginTop: '-20px',
@@ -85,6 +86,16 @@ class NavTopBar extends React.Component {
           }}>
             Tutorial
           </li>
+          <li 
+          style={this.listItemStyle}
+          onClick={() => {
+            this.selectedTabUpdate('roomDisplay')
+            if (!this.state.toggleTab) {
+              this.toggleTab()
+            }
+          }}>
+            Rooms
+          </li>
         </ul>
         <UserInfo
           selectedTab={this.state.selectedTab}
@@ -109,6 +120,12 @@ class NavTopBar extends React.Component {
         <InfoSideBar
           selectedTab={this.state.selectedTab}
           toggleTab={this.state.toggleTab}
+        />
+        <RoomDisplay
+          selectedTab={this.state.selectedTab}
+          toggleTab={this.state.toggleTab}
+          db={this.props.db}
+          topLevelState={this.props.topLevelState}
         />
       </div>
     )

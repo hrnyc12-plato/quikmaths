@@ -1,5 +1,7 @@
 const User = require('./models/user.js')
 const Record = require('./models/records.js')
+const Badges = require('./models/badges')
+const UserBadges = require('./models/userBadges')
 
 const doesUserExist = function(username, cb) {
   User.findAll({
@@ -70,10 +72,10 @@ const updateUser = function(userInfo, cb) {
     var newHighScore = Math.max(userInfo.highScore, results[0].dataValues.highScore)
     var newTime = Math.min(userInfo.bestTime, results[0].dataValues.bestTime)
         User.find({
-          where: {
-            username: userInfo.username
-          }
-        }).then((user) => {
+      where: {
+        username: userInfo.username
+      }
+    }).then((user) => {
       user.update({
         totalCorrect: totalCorrect,
         totalIncorrect: totalIncorrect,

@@ -6,8 +6,7 @@ const bodyparser = require('body-parser');
 const db = require('./db/helpers.js');
 const bcrypt = require('bcrypt');
 const session = require('express-session');
-
-
+const config = require('./config');
 
 app.use(bodyparser.json());
 
@@ -119,7 +118,6 @@ app.post('/user', (req, res) => {
 */
 app.post('/newRecord', (req, res) => {
   db.addNewRecord(req.body);
-  db.updateUser(req.body);
   res.send('Record Added to Database');
 })
 
@@ -199,5 +197,12 @@ app.post('/allRecords', (req, res) => {
   });
 })
 
+app.get('/firebaseConfig', (req, res) => {
+  res.json(config.FIREBASE_CONFIG);
+});
+
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => console.log(`Server listening on Port ${PORT}`));
+const server = app.listen(PORT, () => console.log(`Server listening on Port ${PORT}`));
+
+
+

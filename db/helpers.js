@@ -1,6 +1,8 @@
 const User = require('./models/user.js')
 const Record = require('./models/records.js')
 
+const config = require('../config')
+
 const doesUserExist = function(username, cb) {
   User.findAll({
     where: {
@@ -63,14 +65,17 @@ const getAllUsers = function(cb) {
 //userInfo not defined yet; might have to refactor based on what's passed in 
 
 const updateUser = function(userInfo, cb) {
+  console.log('USERINFO', userInfo)
   getUserByName(userInfo.username, function(results) {
     var totalCorrect = results[0].dataValues.totalCorrect + userInfo.numberCorrect
     var totalIncorrect = results[0].dataValues.totalIncorrect + userInfo.numberIncorrect
     var gamesPlayed = results[0].dataValues.gamesPlayed + 1
     var newHighScore = Math.max(userInfo.highScore, results[0].dataValues.highScore)
     var newTime = Math.min(userInfo.bestTime, results[0].dataValues.bestTime)
-        User.find({
-      username: userInfo.username,
+    User.find({
+      where: {
+        username: userInfo.username
+      }
     }).then((user) => {
       user.update({
         totalCorrect: totalCorrect,
@@ -140,7 +145,6 @@ const getAllRecords = function(cb) {
       console.log('error: ', err);
     })
 } 
-
 
 // manipulating data
 const sortRecordsByScore = function(descending, cb) {

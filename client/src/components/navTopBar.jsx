@@ -8,7 +8,7 @@ class NavTopBar extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      selectedTab: 'user',
+      selectedTab: '',
       toggleTab: 'true'
     }
     this.listStyle = {
@@ -17,12 +17,19 @@ class NavTopBar extends React.Component {
       listStyleType: 'none',
       marginLeft: '-40px',
       marginTop: '-20px',
-      marginBottom: '40px'
+      marginBottom: '40px',
+      width: '800px',
+      margin: 'auto'
     }
     this.listItemStyle = {
       border: '1px solid black',
       textAlign: 'center',
-      cursor : 'pointer'
+      cursor : 'pointer',
+      width: '200px',
+      height: '30px',
+      fontSize: '20px',
+      verticalAlign: 'middle'
+
     }
     this.titleStyle = {
       display: 'grid',
@@ -38,20 +45,27 @@ class NavTopBar extends React.Component {
   }
 
   selectedTabUpdate(selection) {
-    this.setState({
-      selectedTab: selection
-    })
+    console.log('selection', selection);
+    if (selection === this.state.selectedTab) {
+      this.setState({
+        toggleTab: !this.state.toggleTab
+      });
+    } else {
+      this.setState({
+        selectedTab: selection
+      });
+    }
   }
 
   render(){
     return (
       <div>
-        <div style={this.titleStyle}>
-          <h1>QUIKMATHS</h1>
-          <h1
+        <div>
+          <h1 className="title">QUIKMATH</h1>
+          {/* <h1
           style={{textAlign: 'right', cursor: 'pointer'}}
           onClick={()=> {this.toggleTab()}}
-          >&#9776;</h1>
+          >&#9776;</h1> */}
         </div>
         <ul style={this.listStyle}>
           <li 

@@ -2,7 +2,17 @@ import React from 'react'
 import axios from 'axios';
 import Dropzone from 'react-dropzone'
 import request from 'superagent';
-
+import {
+  Table,
+  TableBody,
+  TableFooter,
+  TableHeader,
+  TableHeaderColumn,
+  TableRow,
+  TableRowColumn,
+} from 'material-ui/Table';
+import RaisedButton from 'material-ui/RaisedButton';
+import styles from '../../www/jStyles.js';
 
 const CLOUDINARY_UPLOAD_PRESET = 'dwpjl6zz';
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dvurqudmp/upload';
@@ -78,37 +88,52 @@ class UserInfo extends React.Component {
               </div>
             </Dropzone>
           </div>
-          <div className="userDataTable">
-            <table style={this.tableStyle}>
-              <tbody>
-                <tr>
-                  <td>Username</td>
-                  <td>{this.props.username}</td>
-                </tr>
-                <tr>
-                  <td>High Score</td>
-                  <td style={this.columnStyle}>{this.props.highScore}</td>
-                </tr>
-                <tr>
-                  <td>Best Time</td>
-                  <td style={this.columnStyle}>{this.props.bestTime}</td>
-                </tr>
-                <tr>
-                  <td>Games Played</td>
-                  <td style={this.columnStyle}>{this.props.gamesPlayed}</td>
-                </tr>
-                <tr>
-                  <td>Total Correct</td>
-                  <td style={this.columnStyle}>{this.props.totalCorrect}</td>
-                </tr>
-                <tr>
-                  <td>Total Incorrect</td>
-                  <td style={this.columnStyle}>{this.props.totalIncorrect}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <button onClick={this.props.logout}>Logout</button>
+        <div>
+          <Table
+            fixedHeader={true}
+            fixedFooter={true}
+            selectable={false}
+            multiSelectable={false}
+            style={{width:'500px', margin: 'auto'}}
+          >
+            <TableHeader
+              displaySelectAll={false}
+              adjustForCheckbox={false}
+              enableSelectAll={false}
+            >
+            </TableHeader>
+            <TableBody
+              displayRowCheckbox={false}
+              stripedRows={false}
+            >
+              <TableRow>
+                <TableRowColumn style={styles.userInfoDataTable}><b>Username</b></TableRowColumn>
+                <TableRowColumn style={styles.userInfoDataTable}>{this.props.username}</TableRowColumn>
+              </TableRow>
+              <TableRow>
+                <TableRowColumn style={styles.userInfoDataTable}><b>High Score</b></TableRowColumn>
+                <TableRowColumn style={styles.userInfoDataTable}>{this.props.highScore}</TableRowColumn>
+              </TableRow>
+              <TableRow>
+                <TableRowColumn style={styles.userInfoDataTable}><b>Best Time</b></TableRowColumn>
+                <TableRowColumn style={styles.userInfoDataTable}>{this.props.bestTime}</TableRowColumn>
+              </TableRow>
+              <TableRow>
+                <TableRowColumn style={styles.userInfoDataTable}><b>Games Played</b></TableRowColumn>
+                <TableRowColumn style={styles.userInfoDataTable}>{this.props.gamesPlayed}</TableRowColumn>
+              </TableRow>
+              <TableRow>
+                <TableRowColumn style={styles.userInfoDataTable}><b>Total Correct</b></TableRowColumn>
+                <TableRowColumn style={styles.userInfoDataTable}>{this.props.totalCorrect}</TableRowColumn>
+              </TableRow>
+              <TableRow style={styles.userInfoDataTable}>
+                <TableRowColumn style={styles.userInfoDataTable}><b>Total Incorrect</b></TableRowColumn>
+                <TableRowColumn style={styles.userInfoDataTable}>{this.props.totalIncorrect}</TableRowColumn>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </div>
+          <RaisedButton label="Logout" style={styles.button} onClick={this.props.logout}/>
         </div>
       )
     } else {

@@ -4,6 +4,7 @@ import Statistics from './statistics.jsx'
 import questionGen from '../../../problemGen.js'
 import axios from 'axios'
 import _ from 'underscore'
+import RaisedButton from 'material-ui/RaisedButton';
 
 const problemType = {
   '+': 'Addition',
@@ -131,6 +132,7 @@ class Game extends React.Component {
               saveNewScore={this.saveNewScore}
             />
             <button onClick={this.onQuitClick.bind(this)}>Quit</button>
+            <RaisedButton label="Quit" style={styles.button} onClick={this.onQuitClick.bind(this)}/>
           </div>
         )
       }

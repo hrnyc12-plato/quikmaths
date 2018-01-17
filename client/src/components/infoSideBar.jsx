@@ -10,7 +10,7 @@ class InfoSideBar extends Component {
   constructor(props) {
     super(props)
     this.style = {
-      marginTop: '-20px',
+      marginTop: '20px',
       marginBottom: '20px'
     }
   }

@@ -1,14 +1,8 @@
-import React from 'react'
-import axios from 'axios'
-
-const containerStyle = {
-  display: "grid",
-  height: "100vh",
-  gridTemplateColumns: "15% 40% 30% 15%",
-  gridTemplateRows: "20% 40% 10% 10% 20%",
-  backgroundColor: "#618985",
-  fontFamily: "poppins"
-}
+import React from 'react';
+import axios from 'axios';
+import Paper from 'material-ui/Paper';
+import styles from '../../www/jStyles.js';
+import RaisedButton from 'material-ui/RaisedButton';
 
 const introStyle = {
   gridColumnStart: "2",
@@ -81,7 +75,8 @@ class SignUp extends React.Component{
 
 	render(){
 		return(
-			<div style={containerStyle}>
+			<Paper style={styles.paperStyle} zDepth={2}>
+			<div>
 				<div style={introStyle}>
 					<h1>Welcome to QuikMath</h1>
           <h4>Learn, Play, Compete</h4>
@@ -91,14 +86,15 @@ class SignUp extends React.Component{
 					<h1>Sign Up!</h1>
 					<p>Username: <input type="text" value={this.state.username} onChange={this.handleUsername}></input></p>
 					<p>Password: <input type="password" value={this.state.password} onChange={this.handlePassword}></input></p>
-					<button style={signUpButtonStyle} onClick={() => this.props.handleSignUp({'username': this.state.username, 'password': this.state.password})}>Sign Up</button>
+					<RaisedButton label="Sign Up" style={styles.button} onClick={() => this.props.handleSignUp({'username': this.state.username, 'password': this.state.password})}/>
 				</div>
 				<div style={loginStyle}>
-					<p>I Alredy Have An Account</p>
-					<button style={loginButtonStyle} onClick={this.props.goToLogin}>I have an account!</button>
+					<p>I Already Have An Account</p>
+					<RaisedButton label='I have an account!' style={styles.button} onClick={this.props.goToLogin}/>
 				</div>
 				<p style={smallPrintStyle}>&copy; 2018 QuikMath Fine Print Goes Here</p>
 			</div>
+			</Paper>
 		)
 	}
 }

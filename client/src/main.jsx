@@ -11,6 +11,9 @@ import SignUp from './components/signUp.jsx';
 import questions from '../../problemGen.js';
 import _ from 'underscore';
 
+import Paper from 'material-ui/Paper';
+import styles from '../www/jStyles.js';
+
 class Main extends React.Component {
   constructor(props) {
     super(props);
@@ -50,22 +53,16 @@ class Main extends React.Component {
       totalUserIncorrect: null,
       mounted: false
     }
-    this.AppStyle = {
-      fontFamily: 'Poppins',
-      display: 'grid',
-      gridTemplateColumns: '2fr 5fr',
-      gridColumnGap: '2.5%',
-      backgroundColor: '#96bbbb'
-    }
+ 
     this.collapseStyle = {
       fontFamily: 'Poppins',
       display: 'grid',
       gridTemplateColumns: '1fr',
       gridColumnGap: '2.5%', 
-      backgroundColor: '#96bbbb'
+      backgroundColor: 'white'
     }
     this.NavTopBarStyle = {
-      backgroundColor: "#F2E3BC"
+      backgroundColor: "white"
     }
 
     this.handleLogin = this.handleLogin.bind(this);
@@ -431,7 +428,8 @@ class Main extends React.Component {
       )
     } else {
        return (
-          <div style={this.appStyle}>
+          <div>
+            <Paper style={styles.paperStyle} zDepth={2}>
             <NavTopBar
               topLevelState={this.state}
               db={firebase}
@@ -491,6 +489,7 @@ class Main extends React.Component {
               correctAnswer = {this.state.correctAnswer}
               getUserInfo={this.getUserInfo}
             />
+            </Paper>
           </div>
        )
     }

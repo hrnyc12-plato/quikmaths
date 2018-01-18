@@ -5,6 +5,7 @@ import questionGen from '../../../problemGen.js'
 import axios from 'axios'
 import _ from 'underscore'
 import RaisedButton from 'material-ui/RaisedButton';
+import styles from '../../www/jStyles.js';
 
 const problemType = {
   '+': 'Addition',
@@ -109,6 +110,7 @@ class Game extends React.Component {
             showChoosePathMode={this.props.showChoosePathMode}
             startNewGame={this.props.startNewGame}
             problemType={this.props.problemType}
+            arrayWithResults={this.props.arrayWithResults}
           />
         )
       } else {
@@ -131,7 +133,6 @@ class Game extends React.Component {
               finalTimeUpdate={this.finalTimeUpdate}
               saveNewScore={this.saveNewScore}
             />
-            <button onClick={this.onQuitClick.bind(this)}>Quit</button>
             <RaisedButton label="Quit" style={styles.button} onClick={this.onQuitClick.bind(this)}/>
           </div>
         )

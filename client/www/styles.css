@@ -35,7 +35,7 @@
 }
   
 .text {
-  background-color: #4CAF50;
+  background-color: rgb(0, 188, 212);
   color: white;
   font-size: 16px;
 }
@@ -47,4 +47,21 @@
 
 .title {
   font-size:45px;
+}
+
+.toolbar li {
+  display: block;
+  list-style: none;
+  margin: auto;
+  width:1050px;
+}
+
+.toolbar li:hover {
+  background-color:rgb(0, 188, 212);
+  color:white;
+  display: block;
+  list-style: none;
+  margin: auto;
+  width:1050px;
+  border: 1px solid rgb(0, 188, 212);
 }

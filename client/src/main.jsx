@@ -27,6 +27,7 @@ class Main extends React.Component {
       inProgressBool: false,
       correctArray: [],
       incorrectArray: [],
+      arrayWithResults: [],
       //state for newQuestion
       level: '1',
       questionString: [],
@@ -223,7 +224,8 @@ class Main extends React.Component {
       questionsLeft: 0,
       inProgressBool: false,
       correctArray: [],
-      incorrectArray: []
+      incorrectArray: [],
+      arrayWithResults: []
     });
   }
 
@@ -244,7 +246,8 @@ class Main extends React.Component {
       numberIncorrect: 0,
       numberCorrect: 0,
       correctArray: [],
-      incorrectArray: []
+      incorrectArray: [],
+      arrayWithResults: []
     })
   }
 
@@ -266,10 +269,12 @@ class Main extends React.Component {
 
   correctArrayUpdate(question) {
     this.state.correctArray.push(question);
+    this.state.arrayWithResults.push({question: question, correct:true});
   }
 
   incorrectArrayUpdate(question) {
     this.state.incorrectArray.push(question);
+    this.state.arrayWithResults.push({question: question, correct:false});
   }
 
   showChoosePathMode() {
@@ -288,6 +293,7 @@ class Main extends React.Component {
       questionsLeft: 10, 
       problemType: operator,
       choosePathMode: false,
+      arrayWithResults: [],
       startTime: Date.now()
     }, () => {
       this.newQuestion();
@@ -384,6 +390,7 @@ class Main extends React.Component {
         inProgressBool: false,
         correctArray: [],
         incorrectArray: [],
+        arrayWithResults: [],
         //state for newQuestion
         questionString: [],
         answers: [],
@@ -449,9 +456,8 @@ class Main extends React.Component {
               style={this.navTopBarStyle}
               profilePicture={this.state.profilePicture}
               filterLeaderboard={this.filterLeaderboard}
-            />
-            <NavSideBar
-              style={this.NavSideBarStyle}
+
+
               inProgressBool = {this.state.inProgressBool}
               levelHandler={this.levelHandler}
               startNewGame= {this.startNewGame}
@@ -459,6 +465,15 @@ class Main extends React.Component {
               questionsLeftUpdate = {this.questionsLeftUpdate}
               choosePathMode = {this.state.choosePathMode}
             />
+            {/* <NavSideBar
+              style={this.NavSideBarStyle}
+              inProgressBool = {this.state.inProgressBool}
+              levelHandler={this.levelHandler}
+              startNewGame= {this.startNewGame}
+              inProgressBoolUpdate = {this.inProgressBoolUpdate}
+              questionsLeftUpdate = {this.questionsLeftUpdate}
+              choosePathMode = {this.state.choosePathMode}
+            /> */}
             <Game
               style={this.GameStyle}
               quitGame={this.quitGame}
@@ -470,6 +485,7 @@ class Main extends React.Component {
               inProgressBool = {this.state.inProgressBool}
               correctArray = {this.state.correctArray}
               incorrectArray = {this.state.incorrectArray}
+              arrayWithResults = {this.state.arrayWithResults}
               userId = {this.state.userId}
               username = {this.state.username}
               numberCorrectUpdate = {this.numberCorrectUpdate}

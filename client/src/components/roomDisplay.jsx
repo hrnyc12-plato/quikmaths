@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Link } from 'react-router-dom';
 import _ from 'underscore';
 import CreateRoom from './createRoom.jsx';
-import questionGen from '../../../problemGen.js';
+import generator from '../../../problemGen.js';
 
 class RoomDisplay extends React.Component {
   constructor(props) {
@@ -71,7 +71,7 @@ class RoomDisplay extends React.Component {
   generateFullGame (problemType) {
     let fullGame = [];
     for (var i = 0; i < 10; i++) {
-      let infoObject = questionGen(problemType, 3, 1);
+      let infoObject = generator.questionGen(problemType, 3, 1);
       fullGame.push({
         questionString: `${infoObject.question[1]} ${infoObject.question[0]} ${infoObject.question[2]}`,
         answers: _.shuffle(infoObject.choices),

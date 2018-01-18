@@ -1,13 +1,8 @@
 const User = require('./models/userBadges').User
 const Record = require('./models/records.js')
-<<<<<<< HEAD
-const Badges = require('./models/badges')
-const UserBadges = require('./models/userBadges')
-=======
 const Badges = require('./models/userBadges').Badges;
 const UserBadges = require('./models/userBadges').UserBadges;
 const db = require('./config');
->>>>>>> feat/badgeEvents
 const config = require('../config')
 
 const doesUserExist = function(username, cb) {

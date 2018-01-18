@@ -154,10 +154,6 @@ app.post('/newRecord', (req, res) => {
 */
 
 app.post('/updateUser', (req, res) => {
-<<<<<<< HEAD
-=======
-  // console.log('updateUser, req.body', req.body);
->>>>>>> feat/badgeEvents
   db.updateUser(req.body, (user) => {
     res.json(user)
   });

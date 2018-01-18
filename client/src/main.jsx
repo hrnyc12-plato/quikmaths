@@ -329,18 +329,16 @@ class Main extends React.Component {
     });
   }
 
-<<<<<<< HEAD
 
   updateProfilePicture(url) {
     this.setState({profilePicture: url});
-=======
+  }
   // this is going to get the badges associated with a username
   getUserBadges() {
     axios.post('user/badges', {
       username: this.state.username,
     })
     // then set the state with the array of badges that comes back for the user;
->>>>>>> feat/badgeEvents
   }
 
   updateUserInfo(object) {

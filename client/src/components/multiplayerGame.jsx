@@ -17,18 +17,27 @@ class MultiplayerGame extends React.Component {
     super(props) 
     // finaltime is state in game component instead of prop
     this.state = {
-      finalTime: 0
+      initialTime: new Date(),
+      finalTime: 0,
+      currentQuestion: this.props.gameInfo[0],
+      currentIndex: 0,
+      numberCorrect: 0,
+      numberIncorrect: 0
     }
-    this.finalTimeUpdate = this.finalTimeUpdate.bind(this);
+    this.computeFinalTime = this.computeFinalTime.bind(this);
     this.saveNewScore = this.saveNewScore.bind(this);
+    this.handleAnswerClick = this.handleAnswerClick.bind(this);
   }
 
-  finalTimeUpdate(cb) {
-    this.setState({
-      finalTime: (this.props.timeElapsed / 1000).toFixed(2)
-    }, ()=> {
-      cb();
-    })
+  componentDidMount () {
+    var intervalId = setInterval(() => this.setState({
+      timeElapsed: new Date() - this.state.initialTime
+    }), 1);
+    this.setState({intervalId})
+  }
+
+  computeFinalTime () {
+    return (this.state.timeElapsed / 1000).toFixed(2);
   }
 
   determineNewScore (time, correctAnswers, incorrectAnswers) {
@@ -62,16 +71,18 @@ class MultiplayerGame extends React.Component {
   }
 //create a function that sends new post request to server
 //check all fields that are required
+
+
   saveNewScore () {
     let newScore = this.determineNewScore(
       this.state.finalTime,
-      this.props.numberCorrect,
-      this.props.numberIncorrect
+      this.state.numberCorrect,
+      this.state.numberIncorrect
     )
     axios.post('/newRecord', {
         'time': this.state.finalTime,
-        'numberCorrect': this.props.numberCorrect,
-        'numberIncorrect': this.props.numberIncorrect,
+        'numberCorrect': this.state.numberCorrect,
+        'numberIncorrect': this.state.numberIncorrect,
         'score': newScore,
         'username': this.props.username,
         'operator': this.props.problemType
@@ -82,68 +93,75 @@ class MultiplayerGame extends React.Component {
       'username': this.props.username,
       'highScore': newScore,
       'bestTime': this.state.finalTime,
-      'numberCorrect': this.props.numberCorrect,
-      'numberIncorrect': this.props.numberIncorrect,
+      'numberCorrect': this.state.numberCorrect,
+      'numberIncorrect': this.state.numberIncorrect,
       'gamesPlayed': this.props.gamesPlayed
     }).then((user) => {
       this.props.updateUserInfo(user);
       this.props.getUserInfo();
     })
+
+    this.props.sendResults(newScore, this.state.numberCorrect / this.state.numberIncorrect, this.state.finalTime);
   }
 
   onQuitClick() {
-    console.log('qqqq');
     this.props.quitGame();
   }
 
-
-
-  render() {
-
-
-
-    if (!this.props.choosePathMode) {
-
-      if (this.props.questionsLeft === 0) {
-        return (
-          <Statistics 
-            numberCorrect={this.props.numberCorrect}
-            incorrectArray={this.props.incorrectArray}
-            correctArray={this.props.correctArray}
-            finalTime={this.state.finalTime}
-            showChoosePathMode={this.props.showChoosePathMode}
-            startNewGame={this.props.startNewGame}
-            problemType={this.props.problemType}
-          />
-        )
-      } else {
-        return (
-          <div>
-            <h1>{problemType[this.props.problemType]}</h1>
-            <QuestionAnswer 
-              questionString={this.props.questionString}
-              answers={this.props.answers}
-              correctAnswer={this.props.correctAnswer}
-              newQuestion={this.props.newQuestion}
-              numberCorrectUpdate={this.props.numberCorrectUpdate}
-              questionsLeftUpdate={this.props.questionsLeftUpdate}
-              incorrectArrayUpdate={this.props.incorrectArrayUpdate}
-              correctArrayUpdate={this.props.correctArrayUpdate}
-              inProgressBoolUpdate={this.props.inProgressBoolUpdate}
-              timeElapsed={this.props.timeElapsed}
-              questionsLeft={this.props.questionsLeft}
-              numberIncorrectUpdate={this.props.numberIncorrectUpdate}
-              finalTimeUpdate={this.finalTimeUpdate}
-              saveNewScore={this.saveNewScore}
-            />
-            <button onClick={this.onQuitClick.bind(this)}>Quit</button>
-          </div>
-        )
-      }
+  handleAnswerClick (answerChoice) {
+    var correct = answerChoice === this.state.currentQuestion.correctAnswer;
+    
+    if (this.state.currentIndex + 1 === this.props.gameInfo.length) {
+      clearInterval(this.state.intervalId);
+      correct ? this.setState({
+        numberCorrect: this.state.numberCorrect + 1,
+        finalTime: this.computeFinalTime()
+      }, () => this.saveNewScore()) : this.setState({
+        numberIncorrect: this.state.numberIncorrect + 1,
+        finalTime: this.computeFinalTime()
+      }, () => this.saveNewScore())
     } else {
-      return null;
+      correct ? this.setState({
+        numberCorrect: this.state.numberCorrect + 1,
+        currentIndex: this.state.currentIndex + 1,
+        currentQuestion: this.props.gameInfo[this.state.currentIndex + 1]
+      }) : this.setState({
+        numberIncorrect: this.state.numberIncorrect + 1,
+        currentIndex: this.state.currentIndex + 1,
+        currentQuestion: this.props.gameInfo[this.state.currentIndex + 1]
+      })
     }
   }
+
+  render() {
+    return (
+      <div>
+        <div>{this.state.currentQuestion.questionString}</div>
+				<div>{this.state.currentQuestion.answers.map((answer, id) => 
+          <Answer 
+            key={id}
+            value={answer}
+            handleClick={this.handleAnswerClick}
+					>
+          {answer}
+          </Answer>)}
+				</div>
+				<Timer timeElapsed={this.state.timeElapsed} />
+				<div>Questions Left: {this.props.gameInfo.length - this.state.currentIndex}</div>
+        <button onClick={this.onQuitClick}>Quit</button>
+      </div>
+    )
+  }
 }
+
+const Answer = (props) => (
+	<button style={{cursor:'pointer'}} onClick={() => {
+		props.handleClick(props.value)
+	}}>{props.value}</button>
+)
+
+const Timer = (props) => (
+	<span>Time Elapsed: {(props.timeElapsed/1000).toFixed(2)}</span>
+)
 
 export default MultiplayerGame;

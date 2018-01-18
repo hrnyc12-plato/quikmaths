@@ -8,7 +8,7 @@ class NavTopBar extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      selectedTab: 'user',
+      selectedTab: '',
       toggleTab: 'true'
     }
     this.listStyle = {
@@ -127,6 +127,7 @@ class NavTopBar extends React.Component {
           toggleTab={this.state.toggleTab}
           db={this.props.db}
           topLevelState={this.props.topLevelState}
+          username={this.props.username}
         />
       </div>
     )

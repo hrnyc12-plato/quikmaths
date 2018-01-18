@@ -18,7 +18,7 @@ class RoomDisplay extends React.Component {
     }
 
     this.handleNewRoom = this.handleNewRoom.bind(this)
-
+    this.deleteRoom = this.deleteRoom.bind(this)
     
     firebase.auth().signInAnonymously().catch(function(error) {
       console.error('Error signing on to firebase!', error.message);
@@ -45,6 +45,7 @@ class RoomDisplay extends React.Component {
     for (let key in roomData) {
       let room = roomData[key];
       room.dbKey = key;
+      room.userCount = room.users ? Object.keys(room.users).length : 0;
       newRooms.push(room);
     }
     this.setState({
@@ -60,7 +61,7 @@ class RoomDisplay extends React.Component {
       newRoom.waiting = true;
       newRoom.gameComplete = false;
       newRoom.gameInProgress = false;
-
+      newRoom.creator = this.props.username;
       newRoom.gameInfo = this.generateFullGame(newRoom.operator);
 
       dbConnection.push(newRoom);
@@ -78,6 +79,10 @@ class RoomDisplay extends React.Component {
       })
     }
     return fullGame;
+  }
+
+  deleteRoom (roomId) {
+    this.props.db.database().ref('/rooms/' + roomId).remove();
   }
 
   render() {
@@ -100,8 +105,9 @@ class RoomDisplay extends React.Component {
                   }
                 }}
               >
-                {room.name + ': ' + room.operator}
+                {room.name + ': ' + room.operator + ', ' + room.userCount + ' user(s)'}
               </Link>
+              {room.creator === this.props.username && <button onClick={() => this.deleteRoom(room.dbKey)}>x</button>}
             </div>
             )
           })}

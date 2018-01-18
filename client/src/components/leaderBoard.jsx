@@ -38,7 +38,7 @@ class LeaderBoard extends React.Component {
     if (this.props.selectedTab === 'leaderboard' && this.props.toggleTab) {
       return (
       <div>
-        <div>
+        <div className = "leaderBoardDropdown">
           <DropDownMenu
             value={this.state.filterOperator}
             onChange = {this.handleFilterSelect.bind(this)}
@@ -57,7 +57,7 @@ class LeaderBoard extends React.Component {
             fixedFooter={true}
             selectable={false}
             multiSelectable={false}
-            style={{width:'1000px', margin: 'auto',  backgroundColor:'white'}}
+            style={{width:'1000px', margin: 'auto',  backgroundColor:'white', padding:'30px'}}
           >
             <TableHeader
               displaySelectAll={false}

@@ -92,24 +92,27 @@ class Login extends React.Component {
         </div>
         <div style={loginStyle}>
           <h1>Log In!</h1>
-					<div className = "inputFields">
-            <TextField 
-              type="text"
-							value={this.state.username} 
-							onChange={this.handleUsername}
-							hintText="Enter username"
-							errorText="">
-						</TextField>
-					</div>
-					<div className = "">
-            <TextField 
-              type="password"
-							value={this.state.password} 
-							onChange={this.handlePassword} 
-							hintText="Enter password"
-							errorText="">
-						</TextField>
-					</div>
+          <div className = "inputFields">
+            <div>
+              <TextField 
+                type="text"
+                value={this.state.username} 
+                onChange={this.handleUsername}
+                hintText="Enter username"
+                errorText={this.props.loginErrorText === 'We did not recognize your username' ? this.props.loginErrorText : ''}
+              >
+              </TextField>
+            </div>
+            <div>
+              <TextField 
+                type="password"
+                value={this.state.password} 
+                onChange={this.handlePassword} 
+                hintText="Enter password"
+                errorText={this.props.loginErrorText === 'Incorrect Password' ? this.props.loginErrorText : ''}>
+              </TextField>
+            </div>
+          </div>
           <RaisedButton label="Login" style={styles.button} onClick={() => this.props.handleLogin({'username': this.state.username, 'password': this.state.password})}/>
         </div>
         <div style={signUpStyle}>

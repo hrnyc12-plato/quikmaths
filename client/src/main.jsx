@@ -50,6 +50,8 @@ class Main extends React.Component {
       recordsList: [],
       // render login page conditionally
       isLoggedIn: false,
+      loginErrorText: '', 
+      signupErrorText:'',
       // render game or chooseyourpath conditionally
       choosePathMode: true,
       isSignedUp: true,
@@ -356,7 +358,7 @@ class Main extends React.Component {
     axios.post('/signup', obj)
       .then((result) => {
         if(result.data === false) {
-          alert('username already exists');
+          this.setState({signupErrorText: 'Username already exists'})
         } else {
           this.setState({"isLoggedIn" : true, 
           "username" : result.data.username}) 
@@ -367,8 +369,8 @@ class Main extends React.Component {
   handleLogin(obj) {
     axios.post('/login', obj)
       .then((result) => {
-        if (result.data === false) {
-          alert('Please try again or Create New Account');
+        if (result.data[0] === false) {
+          this.setState({loginErrorText:result.data[1]});
         } else {
           this.setState({"isSignedUp": true, 
           "isLoggedIn": true, 
@@ -383,13 +385,17 @@ class Main extends React.Component {
 
   goToSignUp(){
     this.setState({
-      isSignedUp : false
+      isSignedUp : false,
+      signupErrorText:'',
+      loginErrorText: ''
     })
   }
 
   goToLogin(){
     this.setState({
-      isSignedUp : true
+      isSignedUp : true,
+      signupErrorText:'',
+      loginErrorText: ''
     })
   }
 
@@ -425,6 +431,7 @@ class Main extends React.Component {
         recordsList: [],
         // render login page conditionally
         isLoggedIn: false,
+        loginErrorText: '',
         // render game or chooseyourpath conditionally
         choosePathMode: true,
         isSignedUp: true,
@@ -443,17 +450,18 @@ class Main extends React.Component {
 
     if (this.state.isLoggedIn === false && this.state.isSignedUp === true) {
       return (
-        <Login handleLogin={this.handleLogin} goToSignUp={this.goToSignUp}/>
+        <Login handleLogin={this.handleLogin} goToSignUp={this.goToSignUp} loginErrorText={this.state.loginErrorText}/>
       )
     } else if (this.state.isLoggedIn === false && this.state.isSignedUp === false) {
       return (
-        <SignUp handleSignUp={this.handleSignUp} goToLogin={this.goToLogin}/>
+        <SignUp handleSignUp={this.handleSignUp} goToLogin={this.goToLogin} signupErrorText={this.state.signupErrorText}/>
       )
     } else {
        return (
           <div>
             <Paper style={styles.paperStyle} zDepth={2}>
             <NavTopBar
+              defaultTab={'singleplayer'}
               topLevelState={this.state}
               db={firebase}
               getUserInfo={this.getUserInfo}

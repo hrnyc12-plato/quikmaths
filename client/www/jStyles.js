@@ -4,7 +4,7 @@ module.exports = {
         width: 1400,
         margin: 20,
         textAlign: 'center',
-        display: 'inline-block',
+        margin:'auto',
         backgroundColor: 'white'
     },
     mainPaperStyle : {
@@ -12,13 +12,7 @@ module.exports = {
         width: 1400,
         margin: 20,
         textAlign: 'center',
-        display: 'inline-block',
         backgroundColor: 'white'
-    },
-    leaderboardTableStyle: {
-        customWidth: {
-            width: 200,
-        }
     },
     button: {
         margin: 8

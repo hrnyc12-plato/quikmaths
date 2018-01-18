@@ -31,9 +31,6 @@ class UserInfo extends React.Component {
       width: '100%',
       padding: '20px'
     }
-    this.state = {
-      uploadedFileCloudinaryUrl: this.props.profilePicture || 'http://www.tourniagara.com/wp-content/uploads/2014/10/default-img.gif'
-    }
   }
   
   onImageDrop(files) {
@@ -41,6 +38,10 @@ class UserInfo extends React.Component {
       uploadedFile: files[0]
     });
     this.handleImageUpload(files[0]);
+  }
+
+  handleProfilePictureUpdate(url) {
+    this.props.updateProfilePicture(url);
   }
 
   handleImageUpload(file) {
@@ -65,6 +66,7 @@ class UserInfo extends React.Component {
           }).catch((error) => {
             console.log('error updating profile picture', error);
           });
+          this.handleProfilePictureUpdate(response.body.secure_url);
           this.render();
         });
       }
@@ -82,7 +84,7 @@ class UserInfo extends React.Component {
               multiple={false}
               accept="image/*"
               onDrop={this.onImageDrop.bind(this)}>
-              <img className ="image" src = {`${this.state.uploadedFileCloudinaryUrl}`}/>
+             <img className ="image" src = {(this.props.profilePicture) ? `${this.props.profilePicture}` : 'http://www.tourniagara.com/wp-content/uploads/2014/10/default-img.gif'}/>
               <div className = "middle">
                 <div className = "text">Drag and Drop or Select a new photo</div>
               </div>

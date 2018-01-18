@@ -118,7 +118,7 @@ class UserInfo extends React.Component {
               </TableRow>
               <TableRow>
                 <TableRowColumn style={styles.userInfoDataTable}><b>Best Time</b></TableRowColumn>
-                <TableRowColumn style={styles.userInfoDataTable}>{this.props.bestTime}</TableRowColumn>
+                <TableRowColumn style={styles.userInfoDataTable}>{this.props.bestTime === 1000000 ? '-' : this.props.bestTime}</TableRowColumn>
               </TableRow>
               <TableRow>
                 <TableRowColumn style={styles.userInfoDataTable}><b>Games Played</b></TableRowColumn>

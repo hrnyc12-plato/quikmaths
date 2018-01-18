@@ -79,14 +79,13 @@ app.post('/signup', (req, res) => {
 app.post('/login', (req, res) => {
   db.getUserByName(req.body.username, (exists) => {
     if (!exists) {
-      res.json(false);
+      res.json([false, 'We did not recognize your username']);
     } else {
       bcrypt.compare(req.body.password, exists[0].dataValues.password, (err, result) => {
         if (result) {
           createSession(req, res, exists[0].dataValues)
         } else {
-          console.log(result)
-          res.json(false);
+          res.json([false, 'Incorrect Password']);
         }
       })
     }

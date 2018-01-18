@@ -55,22 +55,36 @@ class SignUp extends React.Component{
 		super(props)
 		this.state = {
 			username: '',
-			password: ''
+			usernameErrorText:'',
+			password: '',
+			passwordErrorText:''
+
 		}
 		this.handleUsername = this.handleUsername.bind(this)
 		this.handlePassword = this.handlePassword.bind(this)
 	}
 
-	handleUsername(e){
+	handleUsername(e) {
 		this.setState({
 			username: e.target.value
-		})
-
+		}, () => {
+			if (this.state.username.length === 0) {
+        this.setState({usernameErrorText:'Please enter a username'});
+			} else {
+				this.setState({usernameErrorText:''});
+			}
+		});
 	}
 
-	handlePassword(e){
+	handlePassword(e) {
 		this.setState({
 			password: e.target.value
+		}, () => {
+      if (this.state.password.length < 6) {
+        this.setState({passwordErrorText:'Password must be at least 6 characters'});
+			} else {
+				this.setState({passwordErrorText:''});
+			}
 		})
 	}
 
@@ -84,29 +98,40 @@ class SignUp extends React.Component{
           <p>It's like HQ trivia but it's only for math, you can't win money, and we have a tenth of a percentage of their userbase</p>
 				</div>
 				<div style={signUpStyle}>
-					<h1>Sign Up!</h1>	
+					<h1>Sign Up!</h1>
 					<div className = "inputFields">
-						<TextField 
-						  type="text"
-							value={this.state.username} 
-							onChange={this.handleUsername}
-							hintText="Enter a username"
-							errorText="">
-						</TextField>
+						<div>
+							<TextField 
+								type="text"
+								value={this.state.username} 
+								onChange={this.handleUsername}
+								hintText="Enter username"
+								errorText={(this.props.signupErrorText === 'Username already exists') ? this.props.signupErrorText : ''}>
+							</TextField>
+						</div>
+						<div>
+							<TextField 
+								type="password"
+								value={this.state.password} 
+								onChange={this.handlePassword} 
+								hintText="Enter password"
+								errorText={this.state.passwordErrorText}>
+							</TextField>
+						</div>
 					</div>
-					<div className = "">
-						<TextField 
-						  type="password"
-							value={this.state.password} 
-							onChange={this.handlePassword} 
-							hintText="Enter a password"
-							errorText="">
-						</TextField>
-					</div>
-					<RaisedButton label="Sign Up" style={styles.button} onClick={() => this.props.handleSignUp({'username': this.state.username, 'password': this.state.password})}/>
+					<RaisedButton 
+						label="Sign Up"
+						style={styles.button}
+						onClick={() => {
+							if (this.state.usernameErrorText === '' && this.state.passwordErrorText === '' && this.state.password.length > 5) {
+								this.props.handleSignUp({'username': this.state.username, 'password': this.state.password});
+							}
+						}
+						
+						}/>
 				</div>
 				<div style={loginStyle}>
-					<p>I Already Have An Account</p>
+					<p>I Already have an Account</p>
 					<RaisedButton label='I have an account!' style={styles.button} onClick={this.props.goToLogin}/>
 				</div>
 				<p style={smallPrintStyle}>&copy; 2018 QuikMath Fine Print Goes Here</p>

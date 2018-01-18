@@ -65,3 +65,15 @@
   width:1050px;
   border: 1px solid rgb(0, 188, 212);
 }
+
+.leaderBoardDropdown {
+  margin-bottom: 40px;
+}
+
+.leaderBoardTable {
+  padding-bottom: 60px;
+}
+
+.inputFields {
+  margin: 20px;
+}

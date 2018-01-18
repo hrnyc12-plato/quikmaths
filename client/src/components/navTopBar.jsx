@@ -9,14 +9,16 @@ class NavTopBar extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      selectedTab: '',
+      selectedTab: this.props.defaultTab || '',
       toggleTab: 'true'
     }
     this.listStyle = {
       display: 'block',
       listStyle: 'none',
       margin: 'auto',
-      width:'1050px'
+      width:'1050px',
+      marginBottom: '20px',
+      paddingBottom: '30px'
     }
     this.listItemStyle = {
       border: '1px solid black',

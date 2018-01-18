@@ -17,7 +17,6 @@ class NavSideBar extends React.Component {
   }
 
   render() {
-    console.log('this.props', this.props);
     if (this.props.selectedTab === 'singleplayer' && this.props.toggleTab) {
       const random = _.sample(['+','/', '*', '-']);
       if (this.props.choosePathMode) {

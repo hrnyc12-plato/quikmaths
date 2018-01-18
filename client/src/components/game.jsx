@@ -94,7 +94,6 @@ class Game extends React.Component {
   }
 
   onQuitClick() {
-    console.log('qqqq');
     this.props.quitGame();
   }
 

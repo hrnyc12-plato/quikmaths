@@ -77,7 +77,6 @@ app.post('/signup', (req, res) => {
 
 app.post('/login', (req, res) => {
   db.getUserByName(req.body.username, (exists) => {
-    console.log('Exists', exists);
     if (!exists) {
       res.json(false);
     } else {
@@ -140,14 +139,12 @@ app.post('/newRecord', (req, res) => {
 */
 
 app.post('/updateUser', (req, res) => {
-  console.log('updateUser, req.body', req.body);
   db.updateUser(req.body, (user) => {
     res.json(user)
   });
 })
 
 app.put('/profilePicture', (req, res) => {
-  console.log('request from profile picture put request', req.body);
   db.updateProfilePicture(req.body);
 })
 // return all records for a user

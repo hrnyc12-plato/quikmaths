@@ -79,6 +79,7 @@ class Main extends React.Component {
     this.numberIncorrectUpdate = this.numberIncorrectUpdate.bind(this)
     this.resetCounts = this.resetCounts.bind(this)
     this.questionsLeftUpdate = this.questionsLeftUpdate.bind(this)
+    this.updateProfilePicture = this.updateProfilePicture.bind(this)
     // this.inProgressBoolUpdate = this.inProgressBoolUpdate.bind(this)
     this.correctArrayUpdate = this.correctArrayUpdate.bind(this)
     this.incorrectArrayUpdate = this.incorrectArrayUpdate.bind(this)
@@ -165,14 +166,13 @@ class Main extends React.Component {
   getIndex() {
     axios.get('/git')
          .then((result) => {
-           console.log('result from get index', result);
-           if (result.data !== false){
+           if (result.data !== false) {
             this.setState({
               isLoggedIn: true, 
               username: result.data.user,
               mounted: true
             }, () => {
-              this.getUserInfo();
+              this.getUserInfo(result.data.user);
             })
            } else {
             this.setState({
@@ -302,12 +302,11 @@ class Main extends React.Component {
     })
   }
 
-  getUserInfo() {
+  getUserInfo(user = this.state.username) {
     axios.post('/user', {
-      username: this.state.username
+      username: user
     })
     .then((response)=> {
-      console.log('response from post request', response);
       this.setState({
         username: response.data[0].username,
         createdAt: response.data[0].createdAt,
@@ -322,6 +321,11 @@ class Main extends React.Component {
     .catch((error)=> {
       console.log(error);
     });
+  }
+
+
+  updateProfilePicture(url) {
+    this.setState({profilePicture: url});
   }
 
   updateUserInfo(object) {
@@ -377,7 +381,6 @@ class Main extends React.Component {
   }
 
   logout(){
-    console.log('loggin out')
     axios.get('/logout')
       .then(() => {
       this.setState({
@@ -456,8 +459,7 @@ class Main extends React.Component {
               style={this.navTopBarStyle}
               profilePicture={this.state.profilePicture}
               filterLeaderboard={this.filterLeaderboard}
-
-
+              updateProfilePicture={this.updateProfilePicture}
               inProgressBool = {this.state.inProgressBool}
               levelHandler={this.levelHandler}
               startNewGame= {this.startNewGame}
@@ -465,15 +467,6 @@ class Main extends React.Component {
               questionsLeftUpdate = {this.questionsLeftUpdate}
               choosePathMode = {this.state.choosePathMode}
             />
-            {/* <NavSideBar
-              style={this.NavSideBarStyle}
-              inProgressBool = {this.state.inProgressBool}
-              levelHandler={this.levelHandler}
-              startNewGame= {this.startNewGame}
-              inProgressBoolUpdate = {this.inProgressBoolUpdate}
-              questionsLeftUpdate = {this.questionsLeftUpdate}
-              choosePathMode = {this.state.choosePathMode}
-            /> */}
             <Game
               style={this.GameStyle}
               quitGame={this.quitGame}

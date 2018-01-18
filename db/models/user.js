@@ -1,6 +1,8 @@
 const Sequelize = require('../config.js').Sequelize;
 const sequelize = require('../config.js').sequelize;
 
+const UserBadges = require('../models/userBadges');
+
 const User = sequelize.define('user', {
   username: Sequelize.DataTypes.STRING,
   password: Sequelize.DataTypes.STRING, 

@@ -16,5 +16,11 @@ User.belongsToMany(Badges, { through:  UserBadges  });
 Badges.belongsToMany(User, { through:  UserBadges });
 
 UserBadges.sync();
+User.sync();
+Badges.sync();
 
-module.exports = UserBadges;
+module.exports = {
+  UserBadges: UserBadges,
+  User: User,
+  Badges: Badges
+};

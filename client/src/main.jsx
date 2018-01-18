@@ -38,6 +38,9 @@ class Main extends React.Component {
       highScore: null,
       bestTime: null,
       profilePicture:null,
+      // states for user badges
+      badges: [],
+
       // array of leaderboard records
       recordsList: [],
       // render login page conditionally
@@ -75,6 +78,7 @@ class Main extends React.Component {
     this.inProgressBoolUpdate = this.inProgressBoolUpdate.bind(this)
     this.questionsLeftUpdate = this.questionsLeftUpdate.bind(this)
     this.getUserInfo = this.getUserInfo.bind(this)
+    this.getUserBadges = this.getUserBadges.bind(this)
     this.getLeaderBoard = this.getLeaderBoard.bind(this)
     this.numberCorrectUpdate = this.numberCorrectUpdate.bind(this)
     this.numberIncorrectUpdate = this.numberIncorrectUpdate.bind(this)
@@ -291,6 +295,14 @@ class Main extends React.Component {
     });
   }
 
+  // this is going to get the badges associated with a username
+  getUserBadges() {
+    axios.post('user/badges', {
+      username: this.state.username,
+    })
+    // then set the state with the array of badges that comes back for the user;
+  }
+
   updateUserInfo(object) {
     this.setState({
       highScore: object.data.highScore,
@@ -406,6 +418,7 @@ class Main extends React.Component {
               topLevelState={this.state}
               db={firebase}
               getUserInfo={this.getUserInfo}
+              getUserBadges={this.getUserBadges}
               getLeaderBoard={this.getLeaderBoard}
               username={this.state.username}
               createdAt={this.state.createdAt}
@@ -459,6 +472,7 @@ class Main extends React.Component {
               answers = {this.state.answers}
               correctAnswer = {this.state.correctAnswer}
               getUserInfo={this.getUserInfo}
+              getUserBadges={this.getUserBadges}
             />
           </div>
        )

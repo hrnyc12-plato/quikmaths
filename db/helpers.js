@@ -1,8 +1,8 @@
-const User = require('./models/user.js')
+const User = require('./models/userBadges').User
 const Record = require('./models/records.js')
-const Badges = require('./models/badges')
-const UserBadges = require('./models/userBadges')
-
+const Badges = require('./models/userBadges').Badges;
+const UserBadges = require('./models/userBadges').UserBadges;
+const db = require('./config');
 const config = require('../config')
 
 const doesUserExist = function(username, cb) {
@@ -120,6 +120,39 @@ const addNewRecord = function(recordInfo) {
     })
 }
 
+const addNewBadges = function(userId,badges) {
+  console.log('addNewBadges db helper was passed the following badges from server', badges);
+  // var test = db.sequelize.query("SELECT id from badges WHERE name='speed demon';", { type: db.sequelize.QueryTypes.SELECT});
+  // var test2 = db.sequelize.query("SELECT id from badges WHERE name='marksman';", { type: db.sequelize.QueryTypes.SELECT});
+  // var test3 = db.sequelize.query("SELECT id from badges WHERE name='gold';", { type: db.sequelize.QueryTypes.SELECT});
+
+  
+  var selectSubQueries = badges.map(badge => db.sequelize.query("SELECT id FROM badges WHERE name=" + db.sequelize.getQueryInterface().escape(badge) +";",  {type: db.sequelize.QueryTypes.SELECT}));
+  
+  // for each badge, do a query
+  // stick into promise.all
+  // parse out id from promise results
+  // build a final query along the line of  insert (user_id, badges_id) into user_badges VALUES (userId, badgeId1), (userId, badgId2), (userId, badgeId3), ... etc
+console.log('what are selectSubQueries', selectSubQueries);
+// console.log('what is test', test);
+  Promise.all(selectSubQueries).then( (results) => {
+    console.log('promise results', JSON.stringify(results));
+    var ids = results.map(result => result[0].id);
+    console.log('result ids', ids);
+    var insertSubQuery = ids.map(id => "(" + userId + "," + db.sequelize.getQueryInterface().escape(id) + ")");
+    db.sequelize.query("INSERT INTO user_badges (userId, badgeId) VALUES " + insertSubQuery , { replacements : [userId], type: db.sequelize.QueryTypes.INSERT })
+  }).catch(err => {
+    console.log('error', err);
+  })
+  // User.findById(userId).then()
+}
+
+// TODO:
+
+const getAllBadges = function() {
+
+};
+
 const getAllRecordsForUser = function(userId, cb) {
   Record.findAll({
     where: {
@@ -179,5 +212,6 @@ module.exports = {
   sortRecordsByTime : sortRecordsByTime,
   getAllRecords : getAllRecords,
   updateUser : updateUser,
-  updateProfilePicture: updateProfilePicture
+  updateProfilePicture: updateProfilePicture,
+  addNewBadges: addNewBadges
 }

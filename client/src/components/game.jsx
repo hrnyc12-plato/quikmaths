@@ -60,14 +60,42 @@ class Game extends React.Component {
     }
     return totalScore < 0 ? 0 : totalScore;
   }
-//create a function that sends new post request to server
-//check all fields that are required
+
+  determineNewBadges(time, score, correctAnswers, incorrectAnswers, operator) {
+    // adding in operator in case we want to add additional badges for those 
+    let awardBadgesList = [];   
+    if (time < 45 && (correctAnswers > incorrectAnswers)) {
+      awardBadgesList.push('speed demon')
+    } 
+    if (score < 10000 && score >= 6000) {
+      awardBadgesList.push('bronze')
+    } else if (score < 19000 && score >= 10000) {
+      awardBadgesList.push('silver')
+    } else if (score >= 19000) {
+      awardBadgesList.push('gold')
+    } else if (correctAnswers === 10) {
+      awardBadgesList.push('epic fail')
+    } else if (incorrectAnswers === 10) {
+      awardBadgesList.push('marksman')
+    }
+    return awardBadgesList;
+  }
+// create a function that sends new post request to server
+// check all fields that are required
   saveNewScore () {
     let newScore = this.determineNewScore(
       this.state.finalTime,
       this.props.numberCorrect,
       this.props.numberIncorrect
     )
+
+    let newBadges = this.determineNewBadges(
+      this.state.finalTime,
+      newScore,
+      this.props.numberCorrect,
+      this.props.numberIncorrect
+    )
+
     axios.post('/newRecord', {
         'time': this.state.finalTime,
         'numberCorrect': this.props.numberCorrect,
@@ -76,18 +104,26 @@ class Game extends React.Component {
         'username': this.props.username,
         'operator': this.props.problemType
       })
-
+  
+      // check if newBadges mot empty
+      if (newBadges.length !== 0) {
+        axios.post('/updateBadges', {
+          userId: this.props.userId,
+          badges: newBadges
+        })
+      }
+        // this.props.getUserBadges
       
     axios.post('/updateUser', {
-      'username': this.props.username,
-      'highScore': newScore,
-      'bestTime': this.state.finalTime,
-      'numberCorrect': this.props.numberCorrect,
-      'numberIncorrect': this.props.numberIncorrect,
-      'gamesPlayed': this.props.gamesPlayed
-    }).then((user) => {
-      this.props.updateUserInfo(user);
-      this.props.getUserInfo();
+        'username': this.props.username,
+        'highScore': newScore,
+        'bestTime': this.state.finalTime,
+        'numberCorrect': this.props.numberCorrect,
+        'numberIncorrect': this.props.numberIncorrect,
+        'gamesPlayed': this.props.gamesPlayed
+      }).then((user) => {
+        this.props.updateUserInfo(user);
+        this.props.getUserInfo();
     })
   }
 

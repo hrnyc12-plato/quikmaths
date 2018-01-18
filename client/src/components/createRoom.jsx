@@ -1,9 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import _ from 'underscore';
-import CreateRoom from './createRoom.jsx';
 
-class RoomDisplay extends React.Component {
+class CreateRoom extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -34,7 +33,9 @@ class RoomDisplay extends React.Component {
   }
 
   handleSubmit () {
-    if (this.state.name.length && this.state.operator.length) {
+    if (this.state.name.includes(' ')) {
+      window.alert('No spaces please');
+    } else if (this.state.name.length && this.state.operator.length) {
       this.props.addRoom(this.state);
     } else {
       window.alert('Both fields are required!');
@@ -60,4 +61,4 @@ class RoomDisplay extends React.Component {
   }
 }
 
-export default RoomDisplay;
+export default CreateRoom;

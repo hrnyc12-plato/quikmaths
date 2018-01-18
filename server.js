@@ -12,6 +12,7 @@ app.use(bodyparser.json());
 
 // Serve up static files
 app.use(express.static(path.join(__dirname, '/client/www')));
+app.use(express.static(path.join(__dirname, '/node_modules/')));
 
 app.use(session({
   secret: 'milksteak',

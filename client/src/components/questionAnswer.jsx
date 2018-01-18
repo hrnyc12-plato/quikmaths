@@ -1,4 +1,5 @@
-import React from 'react'
+import React from 'react';
+import RaisedButton from 'material-ui/RaisedButton';
 
 class QuestionAnswer extends React.Component {
 	constructor(props){
@@ -46,9 +47,9 @@ class QuestionAnswer extends React.Component {
 }
 
 const Answer = (props) => (
-	<button style={{cursor:'pointer'}} onClick={() => {
+	<RaisedButton label={props.answer} style={{cursor:'pointer', margin: '10px'}} onClick={() => {
 		props.findCorrect(props.answer, props.question)
-	}}>{props.answer}</button>
+	}}/>
 )
 
 const Timer = (props) => (

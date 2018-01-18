@@ -3,6 +3,7 @@ import UserInfo from './userInfo.jsx';
 import LeaderBoard from './leaderBoard.jsx';
 import InfoSideBar from './infoSideBar.jsx';
 import RoomDisplay from './roomDisplay.jsx';
+import NavSideBar from './navSideBar.jsx';
 
 class NavTopBar extends React.Component {
   constructor(props){
@@ -12,29 +13,21 @@ class NavTopBar extends React.Component {
       toggleTab: 'true'
     }
     this.listStyle = {
-      display: 'grid',
-      gridTemplateColumns: '1fr 1fr 1fr 1fr',
-      listStyleType: 'none',
-      marginLeft: '-40px',
-      marginTop: '-20px',
-      marginBottom: '40px',
-      width: '800px',
-      margin: 'auto'
+      display: 'block',
+      listStyle: 'none',
+      margin: 'auto',
+      width:'1050px'
     }
     this.listItemStyle = {
       border: '1px solid black',
+      paddingTop:'5px',
       textAlign: 'center',
       cursor : 'pointer',
-      width: '200px',
       height: '30px',
+      width: '200px',
       fontSize: '20px',
-      verticalAlign: 'middle'
-
-    }
-    this.titleStyle = {
-      display: 'grid',
-      gridTemplateColumns: '4fr 1fr',
-      marginTop: '-30px'
+      verticalAlign: 'middle',
+      display:'inline-block',
     }
   }
 
@@ -62,12 +55,8 @@ class NavTopBar extends React.Component {
       <div>
         <div>
           <h1 className="title">QUIKMATH</h1>
-          {/* <h1
-          style={{textAlign: 'right', cursor: 'pointer'}}
-          onClick={()=> {this.toggleTab()}}
-          >&#9776;</h1> */}
         </div>
-        <ul style={this.listStyle}>
+        <ul style={this.listStyle} className ="toolbar">
           <li 
           style={this.listItemStyle}
           onClick={() => {
@@ -79,6 +68,24 @@ class NavTopBar extends React.Component {
           }}>
             User
           </li>
+
+
+
+
+          <li 
+          style={this.listItemStyle}
+          onClick={() => {
+            this.selectedTabUpdate('singleplayer');
+            if (!this.state.toggleTab) {
+              this.toggleTab()
+            }
+          }}>
+            Single Player
+          </li>
+
+
+
+
           <li 
           style={this.listItemStyle}
           onClick={() => {
@@ -126,6 +133,19 @@ class NavTopBar extends React.Component {
           logout = {this.props.logout}
           profilePicture = {this.props.profilePicture}
         />
+
+        <NavSideBar 
+          selectedTab={this.state.selectedTab}
+          toggleTab={this.state.toggleTab}
+          inProgressBool = {this.props.inProgressBool}
+          levelHandler={this.props.levelHandler}
+          startNewGame= {this.props.startNewGame}
+          inProgressBoolUpdate = {this.props.inProgressBoolUpdate}
+          questionsLeftUpdate = {this.props.questionsLeftUpdate}
+          choosePathMode = {this.props.choosePathMode}
+        />
+
+
         <LeaderBoard
           filterLeaderboard={this.props.filterLeaderboard}
           selectedTab={this.state.selectedTab}

@@ -2,6 +2,7 @@ import React from 'react';
 import Paper from 'material-ui/Paper';
 import styles from '../../www/jStyles.js';
 import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
 
 const introStyle = {
   gridColumnStart: "2",
@@ -91,8 +92,24 @@ class Login extends React.Component {
         </div>
         <div style={loginStyle}>
           <h1>Log In!</h1>
-          <p>Username: <input type="text" value={this.state.username} onChange={this.handleUsername}></input></p>
-          <p>Password: <input type="password" value={this.state.password} onChange={this.handlePassword}></input></p>
+					<div className = "inputFields">
+            <TextField 
+              type="text"
+							value={this.state.username} 
+							onChange={this.handleUsername}
+							hintText="Enter username"
+							errorText="">
+						</TextField>
+					</div>
+					<div className = "">
+            <TextField 
+              type="password"
+							value={this.state.password} 
+							onChange={this.handlePassword} 
+							hintText="Enter password"
+							errorText="">
+						</TextField>
+					</div>
           <RaisedButton label="Login" style={styles.button} onClick={() => this.props.handleLogin({'username': this.state.username, 'password': this.state.password})}/>
         </div>
         <div style={signUpStyle}>

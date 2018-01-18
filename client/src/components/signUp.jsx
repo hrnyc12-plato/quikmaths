@@ -3,6 +3,7 @@ import axios from 'axios';
 import Paper from 'material-ui/Paper';
 import styles from '../../www/jStyles.js';
 import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
 
 const introStyle = {
   gridColumnStart: "2",
@@ -83,9 +84,25 @@ class SignUp extends React.Component{
           <p>It's like HQ trivia but it's only for math, you can't win money, and we have a tenth of a percentage of their userbase</p>
 				</div>
 				<div style={signUpStyle}>
-					<h1>Sign Up!</h1>
-					<p>Username: <input type="text" value={this.state.username} onChange={this.handleUsername}></input></p>
-					<p>Password: <input type="password" value={this.state.password} onChange={this.handlePassword}></input></p>
+					<h1>Sign Up!</h1>	
+					<div className = "inputFields">
+						<TextField 
+						  type="text"
+							value={this.state.username} 
+							onChange={this.handleUsername}
+							hintText="Enter a username"
+							errorText="">
+						</TextField>
+					</div>
+					<div className = "">
+						<TextField 
+						  type="password"
+							value={this.state.password} 
+							onChange={this.handlePassword} 
+							hintText="Enter a password"
+							errorText="">
+						</TextField>
+					</div>
 					<RaisedButton label="Sign Up" style={styles.button} onClick={() => this.props.handleSignUp({'username': this.state.username, 'password': this.state.password})}/>
 				</div>
 				<div style={loginStyle}>

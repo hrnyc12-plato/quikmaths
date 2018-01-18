@@ -57,7 +57,7 @@ class LeaderBoard extends React.Component {
             fixedFooter={true}
             selectable={false}
             multiSelectable={false}
-            style={{width:'1000px', margin: 'auto'}}
+            style={{width:'1000px', margin: 'auto',  backgroundColor:'white'}}
           >
             <TableHeader
               displaySelectAll={false}
@@ -65,11 +65,12 @@ class LeaderBoard extends React.Component {
               enableSelectAll={false}
             >
               <TableRow>
-                <TableHeaderColumn>User</TableHeaderColumn>
-                <TableHeaderColumn>Score</TableHeaderColumn>
-                <TableHeaderColumn>Time</TableHeaderColumn>
-                <TableHeaderColumn>Operator</TableHeaderColumn>
-                <TableHeaderColumn>Accuracy</TableHeaderColumn>
+                <TableHeaderColumn style={styles.tableCell}>Rank</TableHeaderColumn>
+                <TableHeaderColumn style={styles.tableCell}>User</TableHeaderColumn>
+                <TableHeaderColumn style={styles.tableCell}>Score</TableHeaderColumn>
+                <TableHeaderColumn style={styles.tableCell}>Time</TableHeaderColumn>
+                <TableHeaderColumn style={styles.tableCell}>Operator</TableHeaderColumn>
+                <TableHeaderColumn style={styles.tableCell}>Accuracy</TableHeaderColumn>
               </TableRow>
             </TableHeader>
             <TableBody
@@ -80,11 +81,12 @@ class LeaderBoard extends React.Component {
             >
               {this.props.recordsList.length > 0 ? this.props.recordsList.map((row, i) => {
                 return (<TableRow key={i}>
-                  <TableRowColumn>{row.username}</TableRowColumn>
-                  <TableRowColumn>{row.score}</TableRowColumn>
-                  <TableRowColumn>{row.time} seconds</TableRowColumn>
-                  <TableRowColumn><b>{row.operator}</b></TableRowColumn>
-                  <TableRowColumn>{row.numberCorrect / (row.numberCorrect + row.numberIncorrect) * 100 + ' %'}</TableRowColumn>
+                  <TableRowColumn style={styles.tableCell}>{i+1}</TableRowColumn>
+                  <TableRowColumn style={styles.tableCell}>{row.username}</TableRowColumn>
+                  <TableRowColumn style={styles.tableCell}>{row.score}</TableRowColumn>
+                  <TableRowColumn style={styles.tableCell}>{row.time} seconds</TableRowColumn>
+                  <TableRowColumn style={styles.tableCell}><b>{row.operator}</b></TableRowColumn>
+                  <TableRowColumn style={styles.tableCell}>{row.numberCorrect / (row.numberCorrect + row.numberIncorrect) * 100 + ' %'}</TableRowColumn>
                 </TableRow>)
               }) : ''}
             </TableBody>

@@ -7,6 +7,14 @@ module.exports = {
         display: 'inline-block',
         backgroundColor: 'white'
     },
+    mainPaperStyle : {
+        height: 800,
+        width: 1400,
+        margin: 20,
+        textAlign: 'center',
+        display: 'inline-block',
+        backgroundColor: 'white'
+    },
     leaderboardTableStyle: {
         customWidth: {
             width: 200,
@@ -17,5 +25,10 @@ module.exports = {
     },
     userInfoDataTable: {
         fontSize: '20px'
+    },
+    tableCell:{
+        color:'black',
+        border: '1px rgb(128, 128, 128) solid',
+        textAlign: 'center'
     }
 }

@@ -4,6 +4,8 @@ import Statistics from './statistics.jsx'
 import questionGen from '../../../problemGen.js'
 import axios from 'axios'
 import _ from 'underscore'
+import RaisedButton from 'material-ui/RaisedButton';
+import styles from '../../www/jStyles.js';
 
 const problemType = {
   '+': 'Addition',
@@ -22,7 +24,8 @@ class MultiplayerGame extends React.Component {
       currentQuestion: this.props.gameInfo[0],
       currentIndex: 0,
       numberCorrect: 0,
-      numberIncorrect: 0
+      numberIncorrect: 0,
+      arrayWithResults: []
     }
     this.computeFinalTime = this.computeFinalTime.bind(this);
     this.saveNewScore = this.saveNewScore.bind(this);
@@ -101,7 +104,7 @@ class MultiplayerGame extends React.Component {
       this.props.getUserInfo();
     })
 
-    this.props.sendResults(newScore, this.state.numberCorrect / this.state.numberIncorrect, this.state.finalTime);
+    this.props.sendResults(newScore, this.state.numberCorrect / 10, this.state.finalTime, this.state.arrayWithResults);
   }
 
   onQuitClick() {
@@ -115,17 +118,33 @@ class MultiplayerGame extends React.Component {
       clearInterval(this.state.intervalId);
       correct ? this.setState({
         numberCorrect: this.state.numberCorrect + 1,
-        finalTime: this.computeFinalTime()
+        finalTime: this.computeFinalTime(),
+        arrayWithResults: [...this.state.arrayWithResults, {
+          question: this.state.currentQuestion.questionString,
+          correct:true
+        }]
       }, () => this.saveNewScore()) : this.setState({
+        arrayWithResults: [...this.state.arrayWithResults, {
+          question: this.state.currentQuestion.questionString,
+          correct:false
+        }],
         numberIncorrect: this.state.numberIncorrect + 1,
         finalTime: this.computeFinalTime()
       }, () => this.saveNewScore())
     } else {
       correct ? this.setState({
+        arrayWithResults: [...this.state.arrayWithResults, {
+          question: this.state.currentQuestion.questionString,
+          correct:true
+        }],
         numberCorrect: this.state.numberCorrect + 1,
         currentIndex: this.state.currentIndex + 1,
         currentQuestion: this.props.gameInfo[this.state.currentIndex + 1]
       }) : this.setState({
+        arrayWithResults: [...this.state.arrayWithResults, {
+          question: this.state.currentQuestion.questionString,
+          correct:false
+        }],
         numberIncorrect: this.state.numberIncorrect + 1,
         currentIndex: this.state.currentIndex + 1,
         currentQuestion: this.props.gameInfo[this.state.currentIndex + 1]
@@ -135,29 +154,26 @@ class MultiplayerGame extends React.Component {
 
   render() {
     return (
-      <div>
+      <div style={{fontFamily: 'Poppins', marginTop: '5px'}}>
         <div>{this.state.currentQuestion.questionString}</div>
 				<div>{this.state.currentQuestion.answers.map((answer, id) => 
           <Answer 
             key={id}
             value={answer}
             handleClick={this.handleAnswerClick}
-					>
-          {answer}
-          </Answer>)}
+					/>)}
 				</div>
 				<Timer timeElapsed={this.state.timeElapsed} />
 				<div>Questions Left: {this.props.gameInfo.length - this.state.currentIndex}</div>
-        <button onClick={this.onQuitClick}>Quit</button>
+        {/* <button onClick={this.onQuitClick}>Quit</button> */}
       </div>
     )
   }
 }
 
 const Answer = (props) => (
-	<button style={{cursor:'pointer'}} onClick={() => {
-		props.handleClick(props.value)
-	}}>{props.value}</button>
+	<RaisedButton label={props.value} style={{cursor:'pointer', margin: '10px'}} onClick={() => {
+		props.handleClick(props.value)}}/>
 )
 
 const Timer = (props) => (

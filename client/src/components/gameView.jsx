@@ -2,11 +2,20 @@ import React from 'react';
 import _ from 'underscore';
 import MultiplayerGame from '../components/multiplayerGame.jsx';
 import MultiplayerResults from '../components/multiplayerResults.jsx';
+import {List, ListItem} from 'material-ui/List';
+import Subheader from 'material-ui/Subheader';
+import Avatar from 'material-ui/Avatar';
+import CheckBox from 'material-ui/svg-icons/toggle/check-box';
+import CheckBoxOutline from 'material-ui/svg-icons/toggle/check-box-outline-blank';
+import RaisedButton from 'material-ui/RaisedButton';
+import Paper from 'material-ui/Paper';
+import CircularProgress from 'material-ui/CircularProgress';
 
 class GameView extends React.Component {
   constructor (props) {
     super(props)    
     this.state = this.props.state; 
+    this.state.countdown = 0;
 
     this.handleReadyClick = this.handleReadyClick.bind(this);
     this.beginGame = this.beginGame.bind(this);
@@ -20,13 +29,16 @@ class GameView extends React.Component {
     })) 
   }
 
-  handleFinishedUser (score, accuracy, time) {
+  handleFinishedUser (score, accuracy, time, arrayWithResults) {
     console.log('FINISHED RESULTS', score, accuracy, time);
     let userResultsDb = this.state.db.ref('/rooms/' + this.state.roomId + '/users/' + this.state.userId + '/results');
     userResultsDb.set({score, accuracy, time});
     let userDb = this.state.db.ref('/rooms/' + this.state.roomId + '/users/' + this.state.userId + '/finished');
     userDb.set(true);
-    this.setState({userDone: true});
+    this.setState({
+      userDone: true,
+      arrayWithResults: arrayWithResults
+    });
   }
 
   checkAllReady () {
@@ -86,7 +98,8 @@ class GameView extends React.Component {
         let user = {
           name: this.state.username,
           ready: false,
-          finished: false
+          finished: false,
+          profilePictureUrl: this.state.profilePicture
         }
         userDb.push(user);
       }
@@ -122,21 +135,34 @@ class GameView extends React.Component {
   render () {
     if (this.state.waiting) {
       return this.state.users.length ? (
-        <div>
+        <div style={{fontFamily: 'Poppins', marginLeft: '300px', width: '800px', alignItems: 'center', textAlign: 'center', marginBottom: '10px'}}>
           <h3>Welcome to {this.state.roomName}</h3>
-          Users: {_.pluck(this.state.users, 'name').join(', ')}<br/>
-          Ready users: {_.filter(this.state.users, (user) => user.ready).length}<br/>
-          {!this.state.userReady && this.state.users.length > 1 && 
-            <div>Click the button to begin the game!<br/>
-              <button onClick={this.handleReadyClick}> Ready </button>
-            </div>}
-          {this.state.users.length === 1 && <div> Waiting for more players to join! </div>}
+            <List style={{float: 'left', textAlign: 'center', width: '200px'}}>
+              <Subheader>Users</Subheader>
+              {this.state.users.map((user) => {
+                return (
+                  <ListItem
+                    primaryText={user.name}
+                    leftAvatar={<Avatar src={user.profilePictureUrl}/>}
+                    rightIcon={user.ready ? <CheckBox /> : <CheckBoxOutline />}
+                  />
+                );
+              })}
+            <RaisedButton disabled={this.state.users.length === 1 || this.state.userReady} onClick={this.handleReadyClick} label="Ready"/>
+            </List>
+            <div style={{float: 'left', width: '500px'}}>
+              <h2> THIS IS A PLACEHOLDER FOR THE CHAT </h2>
+            </div>
         </div>
       ) : (<div>Loading</div>)
     } else if (!this.state.waiting && !this.state.gameInProgress) {
-      setTimeout(this.beginGame, 5000)
-      return (<div>
-        <h3>All users are ready! Game will begin in 5 seconds...</h3>
+      setTimeout(this.beginGame, 5000);
+      return (<div style={{marginBottom: '5px', textAlign: 'center'}}>
+        <h3>All users are ready! Game is about to begin.</h3>
+        <CircularProgress
+          size={60}
+          thickness={7}
+        />
         </div>)
     } else if (!this.state.userDone && this.state.gameInProgress) {
       return (
@@ -154,14 +180,19 @@ class GameView extends React.Component {
         </div>
       );
     } else if (this.state.userDone && !this.state.gameComplete) {
-      return (<div> 
+      return (<div style={{marginBottom: '5px'}}> 
         <h3>Great job! Results will be displayed when all players have finished.</h3>
+        <CircularProgress
+          size={60}
+          thickness={7}
+        />
         </div>)
     } else if (this.state.gameComplete) {
       return (
         <div>
           <MultiplayerResults
             users={this.state.users}
+            arrayWithResults={this.state.arrayWithResults}
           />
         </div>
       )

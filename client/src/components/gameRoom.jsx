@@ -3,6 +3,9 @@ import _ from 'underscore';
 import NavTopBar from '../components/navTopBar.jsx';
 import GameView from '../components/gameView.jsx';
 import axios from 'axios';
+import Paper from 'material-ui/Paper';
+import styles from '../../www/jStyles.js';
+import RaisedButton from 'material-ui/RaisedButton';
 
 class GameRoom extends React.Component {
   constructor (props) {
@@ -16,8 +19,19 @@ class GameRoom extends React.Component {
       this.state.db = this.props.location.state.db.database();
       this.state.userReady = false;
       this.state.roomName = this.props.match.params.name;
+      this.collapseStyle = {
+        fontFamily: 'Poppins',
+        display: 'grid',
+        gridTemplateColumns: '1fr',
+        gridColumnGap: '2.5%', 
+        backgroundColor: 'white'
+      }
+      this.NavTopBarStyle = {
+        backgroundColor: "white"
+      }
     } else {
       this.props.history.push('/')
+      return;
     }
 
     this.setUserId = this.setUserId.bind(this);
@@ -321,7 +335,7 @@ class GameRoom extends React.Component {
 
   render () {
     return (
-      <div>
+      <Paper style={styles.paperStyle} zDepth={2}>
         <NavTopBar 
           topLevelState={this.state}
           db={firebase}
@@ -342,7 +356,8 @@ class GameRoom extends React.Component {
           profilePicture={this.state.profilePicture}
           filterLeaderboard={this.filterLeaderboard}
         />
-        <button onClick={this.leaveRoom}>Leave Room</button>
+        <div style={{marginTop: '5px'}}>
+        <RaisedButton label="Leave Room" onClick={this.leaveRoom}/>
         <GameView
           state={this.state}
           quitGame={this.quitGame}
@@ -355,7 +370,8 @@ class GameRoom extends React.Component {
           problemType={this.state.problemType}
           setUserId={this.setUserId}
         />
-      </div>
+        </div>
+      </Paper>
     )
   }
 }

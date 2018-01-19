@@ -2,8 +2,9 @@ const User = require('./models/userBadges').User
 const Record = require('./models/records.js')
 const Badges = require('./models/userBadges').Badges;
 const UserBadges = require('./models/userBadges').UserBadges;
+const Relationship = require('./models/relationship');
 const db = require('./config');
-const config = require('../config')
+const config = require('../config');
 
 const doesUserExist = function(username, cb) {
   User.findAll({
@@ -191,6 +192,71 @@ const getAllRecords = function(cb) {
     })
 } 
 
+const getAllFriends = function(username, cb) {
+  User.findAll({
+    where: {"username": username}
+  })
+  .then(results => {
+    var usernameId = results[0].dataValues.id;
+    db.sequelize.query(`SELECT * FROM users INNER JOIN relationships ON users.id = relationships.friendId WHERE relationships.userId = ${usernameId};`, { type: db.sequelize.QueryTypes.SELECT})
+    .then(friends => {
+      cb(friends);
+    })
+  })
+}
+
+    //WRITE A HELPER TO ADD A FRIEND
+const addFriend = function(username, friendUsername, cb) {
+  // User.findAll({
+  //   where: {"username": username}
+  // })
+  // .then(results => {
+  //   console.log('main username results from addFriend helper');
+  //   User.findAll({
+  //     where: {"username": friendUsername}
+  //   })
+  //   .then(res => {
+  //     console.log('main username results from addFriend helper', res);
+  //     const newRelationship = Relationship.create({
+  //       "username": userInfo.username,
+  //       "password": userInfo.password
+  //     })
+  //   })
+  // })
+  //check if the relationship already exists
+    //if it does not exist
+      //
+      console.log('username recieved from addFriend', username);
+      console.log('friend username recieved from addFriend', friendUsername);
+  db.sequelize.query(`SELECT * FROM relationships WHERE relationships.userId = (SELECT id FROM users WHERE username="${username}") AND relationships.friendID = (SELECT id FROM users WHERE username="${friendUsername}");`, { type: db.sequelize.QueryTypes.SELECT})
+  .then((results) => {
+    console.log('Relationship1', results);
+    db.sequelize.query(`SELECT * FROM relationships WHERE relationships.userId = (SELECT id FROM users WHERE username="${friendUsername}") AND relationships.friendID = (SELECT id FROM users WHERE username="${username}");`, { type: db.sequelize.QueryTypes.SELECT})
+    .then((results2) => {
+      console.log('Relationship2', results2);
+    }).catch(err => {
+      console.log('Error fetching friend relationship between User2 to User1: ', err);
+    })
+  }).catch(err => {
+    console.log('Error fetching friend relationship between User1 to User2: ', err);
+  })
+}
+
+const deleteFriend = function(username, friendUsername, cb) {
+  //deleting relationship between User1 to User2
+  db.sequelize.query(`DELETE FROM relationships WHERE relationships.userId = (SELECT id FROM users WHERE username="${friendUsername}") AND relationships.friendID = (SELECT id FROM users WHERE username="${username}") OR relationships.userId = (SELECT id FROM users WHERE username="${username}") AND relationships.friendID = (SELECT id FROM users WHERE username="${friendUsername}");`, { type: db.sequelize.QueryTypes.DELETE})
+  .then((results) => {
+    cb(results);
+  }).catch(err => {
+    console.log('Error friend relationship between User1 to User2: ', err);
+  })
+}
+
+
+
+
+
+
 // manipulating data
 const sortRecordsByScore = function(descending, cb) {
 
@@ -213,5 +279,8 @@ module.exports = {
   getAllRecords : getAllRecords,
   updateUser : updateUser,
   updateProfilePicture: updateProfilePicture,
-  addNewBadges: addNewBadges
+  addNewBadges: addNewBadges,
+  getAllFriends:getAllFriends,
+  deleteFriend:deleteFriend,
+  addFriend:addFriend
 }

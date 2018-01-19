@@ -38,7 +38,7 @@ class NavTopBar extends React.Component {
       toggleTab: !this.state.toggleTab
     })
   }
-
+  
   selectedTabUpdate(selection) {
     if (selection === this.state.selectedTab) {
       this.setState({
@@ -134,6 +134,8 @@ class NavTopBar extends React.Component {
           logout = {this.props.logout}
           profilePicture = {this.props.profilePicture}
           updateProfilePicture = {this.props.updateProfilePicture}
+          userFriends={this.props.userFriends}
+          getUserFriends={this.props.getUserFriends}
         />
 
         <NavSideBar 

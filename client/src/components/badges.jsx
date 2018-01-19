@@ -13,7 +13,7 @@ import {
 } from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
 import styles from '../../www/jStyles.js';
-
+import BadgeData from './badgeData.jsx';
 
 
 class Badges extends React.Component {
@@ -65,10 +65,19 @@ class Badges extends React.Component {
         }
       ]
     }
+    this.grabBadgeData = this.grabBadgeData.bind(this);
   }
 
+  grabBadgeData() {
+   return this.props.badges.map( (badge,i) => {
+     return this.state.badges.find(badgeObj => badgeObj.name === badge);
+    })
+  }
+
+  // badgesArray = grabBadgeData();
+
   render() {
-    console.log('Badges is rendering with props?', this.props.badges);
+    // console.log('Badges is rendering with props?', this.props.badges);
       return (
         <div>
           <Table
@@ -76,7 +85,7 @@ class Badges extends React.Component {
             fixedFooter={true}
             selectable={false}
             multiSelectable={false}
-            style={{width:'500px', margin: 'auto'}}
+            style={{width:'700px', margin: 'auto'}}
           >
             <TableHeader
               displaySelectAll={false}
@@ -90,22 +99,22 @@ class Badges extends React.Component {
             >
               <TableRow>
                 <TableRowColumn style={styles.userInfoDataTable}><b>Badges</b></TableRowColumn>        
-                { 
-                  this.props.badges.map(badge => {
-                    
-                }
-                )}
-                <TableRowColumn style={styles.badgesDataTable}>
+                <BadgeData badges={this.grabBadgeData()}/>
+                {/* <TableRowColumn style={styles.badgesDataTable}>
                   <img width="24" height="24" src="http://res.cloudinary.com/dvurqudmp/image/upload/v1516318063/backbone_iby6cr.png"/>
-                </TableRowColumn>
+                </TableRowColumn> */}
               </TableRow>
             </TableBody>
           </Table>
         </div>
       )
     } 
-  
 }
 
+const Image = (props) => (
+  <TableRowColumn >
+    <img width="24" height="24" src={image}/>
+  </TableRowColumn> 
+)
 
 export default Badges;

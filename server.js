@@ -235,9 +235,10 @@ app.delete('/friends', (req,res) => {
 })
 
 app.post('/friends', (req,res) => {
-  // console.log('req.body', req.body);
-  db.addFriend('Jimmy', 'ryan', (results)=>{
-    res.send(results);
+  let username = req.body.params.loggedInUsername;
+  var friendUsername = req.body.params.friendUsername;
+  db.addFriend(username, friendUsername, (results) => {
+    res.sendStatus(200);
   });
 });
 

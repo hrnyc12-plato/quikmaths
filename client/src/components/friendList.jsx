@@ -9,6 +9,7 @@ import {List, ListItem} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import IconButton from 'material-ui/IconButton';
 import ActionDeleteForever from 'material-ui/svg-icons/action/delete-forever';
+import NoteAdd from 'material-ui/svg-icons/action/note-add';
 import axios from 'axios';
 
 
@@ -28,17 +29,42 @@ class FriendList extends React.Component {
             loggedInUsername: this.props.username,
             friendUsername: this.state.friendUsername
         }
-        }).then((results)=>{
-            console.log('results from handle delete ', results);
-            console.log('this.props.username', this.props.username);
+        }).then((results) => {
+          console.log('results from handle delete ',results);
             this.props.getUserFriends(this.props.username);
         })
     })
   }
 
+  handleAddClick() {
+      axios.post('/friends', { 
+        params: {
+          loggedInUsername: this.props.username,
+          friendUsername: this.state.friendUsername
+        }
+      }).then((results) => {
+        console.log('YYYYY');
+        console.log('results from handle add ', results);
+        this.props.getUserFriends(this.props.username);
+      }).catch((err) => {
+        console.log('ERRORYYYYY',err);
+      })
+  }
+
+  handleFriendSearchChange(e) {
+    this.setState({friendUsername:e.target.value});
+  }
+
   render() {
     return (<div>
       <h1>FRIENDS</h1>
+      <div>
+        <span>Search for a Friend: </span>
+        <input onChange={this.handleFriendSearchChange.bind(this)}></input>
+        <IconButton onClick={this.handleAddClick.bind(this)}>
+          <NoteAdd/>
+        </IconButton>
+      </div>
         <List style={{width:'300px' ,margin:'auto'}}>
           {this.props.userFriends.map((friend, i)=> (
             <ListItem
@@ -46,13 +72,13 @@ class FriendList extends React.Component {
                 value={friend.username}
                 primaryText={friend.username}
                 leftAvatar={<Avatar src={friend.profilePicture}/>}
-                rightIcon={
-                    <div>
-                      <IconButton style={{margin: '1px 20px 0px 0px'}} value={friend.username} onClick={this.handleDeleteClick.bind(this, friend.username)}>
-                      <ActionDeleteForever/>
-                    </IconButton>
-                    </div>}
-            />
+            >
+                <div>
+                  <IconButton value={friend.username} onClick={this.handleDeleteClick.bind(this, friend.username)}>
+                    <ActionDeleteForever/>
+                  </IconButton>
+                </div>
+            </ListItem>
           ))}
         </List>
     </div>)

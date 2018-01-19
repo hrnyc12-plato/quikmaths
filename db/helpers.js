@@ -197,33 +197,15 @@ const getAllFriends = function(username, cb) {
 
     //WRITE A HELPER TO ADD A FRIEND
 const addFriend = function(username, friendUsername, cb) {
-  // User.findAll({
-  //   where: {"username": username}
-  // })
-  // .then(results => {
-  //   console.log('main username results from addFriend helper');
-  //   User.findAll({
-  //     where: {"username": friendUsername}
-  //   })
-  //   .then(res => {
-  //     console.log('main username results from addFriend helper', res);
-  //     const newRelationship = Relationship.create({
-  //       "username": userInfo.username,
-  //       "password": userInfo.password
-  //     })
-  //   })
-  // })
-  //check if the relationship already exists
-    //if it does not exist
-      //
-      console.log('username recieved from addFriend', username);
-      console.log('friend username recieved from addFriend', friendUsername);
   db.sequelize.query(`SELECT * FROM relationships WHERE relationships.userId = (SELECT id FROM users WHERE username="${username}") AND relationships.friendID = (SELECT id FROM users WHERE username="${friendUsername}");`, { type: db.sequelize.QueryTypes.SELECT})
   .then((results) => {
-    console.log('Relationship1', results);
     db.sequelize.query(`SELECT * FROM relationships WHERE relationships.userId = (SELECT id FROM users WHERE username="${friendUsername}") AND relationships.friendID = (SELECT id FROM users WHERE username="${username}");`, { type: db.sequelize.QueryTypes.SELECT})
     .then((results2) => {
-      console.log('Relationship2', results2);
+      if(results.length === 0 && results2.length === 0) {
+        db.sequelize.query(`INSERT INTO relationships (userId, friendId) VALUES ((SELECT id FROM users WHERE username='${username}') , (SELECT id FROM users WHERE username='${friendUsername}'));`, { type: db.sequelize.QueryTypes.INSERT})
+        db.sequelize.query(`INSERT INTO relationships (userId, friendId) VALUES ((SELECT id FROM users WHERE username='${friendUsername}') , (SELECT id FROM users WHERE username='${username}'));`, { type: db.sequelize.QueryTypes.INSERT})
+      }
+      cb();
     }).catch(err => {
       console.log('Error fetching friend relationship between User2 to User1: ', err);
     })

@@ -4,7 +4,7 @@ module.exports = {
         width: 1400,
         margin: 20,
         textAlign: 'center',
-        margin:'auto',
+        display: 'inline-block',
         backgroundColor: 'white'
     },
     mainPaperStyle : {

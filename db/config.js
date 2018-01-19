@@ -27,8 +27,9 @@ const Sequelize = require('sequelize');
 //         const sequelize = new Sequelize(config.base, config.user, config.pass, config.options)
 
 
- const sequelize = new Sequelize('quikmath', 'plato', 'hrnyc12plato', {
-  host: 'quikmaths.ccl2ixzx9sdm.us-east-2.rds.amazonaws.com',
+
+const sequelize = new Sequelize('quikmath', 'plato', 'hrnyc12plato', {
+ host: 'quikmaths.ccl2ixzx9sdm.us-east-2.rds.amazonaws.com',
   dialect: 'mysql',
   pool: {
     max: 20,
@@ -41,3 +42,4 @@ const Sequelize = require('sequelize');
 sequelize.authenticate().catch(err => console.log(err))
 module.exports.sequelize = sequelize;
 module.exports.Sequelize = Sequelize;
+  

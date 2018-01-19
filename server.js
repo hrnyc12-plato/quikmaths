@@ -105,13 +105,6 @@ app.post('/user', (req, res) => {
   });
 })
 
-app.post('/user/badges', (req,res) => {
-  const username = req.body.username;
-  // console.log('the client sent back', req.body);
-  //db.getUserBadges
-  res.send(req.body);
-})
-
 app.post('/updateBadges', (req, res) => {
   const badges = req.body.badges;
   console.log('the client sent to updateBadges', req.body);
@@ -119,6 +112,10 @@ app.post('/updateBadges', (req, res) => {
   res.send();
 })
 
+app.post('/user/badges', (req, res) => {
+  let id = req.body.userId;
+  db.getAllBadges(id, req, res);
+})
 
 // save new record to database
 /*
@@ -154,6 +151,10 @@ app.post('/newRecord', (req, res) => {
 */
 
 app.post('/updateUser', (req, res) => {
+<<<<<<< HEAD
+=======
+  // console.log('updateUser, req.body', req.body);
+>>>>>>> working on rendering correct badge images
   db.updateUser(req.body, (user) => {
     res.json(user)
   });

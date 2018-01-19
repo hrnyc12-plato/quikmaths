@@ -2,6 +2,7 @@ import React from 'react'
 import axios from 'axios';
 import Dropzone from 'react-dropzone'
 import request from 'superagent';
+import Badges from './badges.jsx';
 import {
   Table,
   TableBody,
@@ -97,7 +98,7 @@ class UserInfo extends React.Component {
             fixedFooter={true}
             selectable={false}
             multiSelectable={false}
-            style={{width:'500px', margin: 'auto'}}
+            style={{width:'700px', margin: 'auto'}}
           >
             <TableHeader
               displaySelectAll={false}
@@ -139,6 +140,7 @@ class UserInfo extends React.Component {
           <FriendList getUserFriends={this.props.getUserFriends} username={this.props.username} userFriends={this.props.userFriends}/>
         </div>
         </div>
+          <Badges badges={this.props.badges}/>
           <RaisedButton label="Logout" style={styles.button} onClick={this.props.logout}/>
         </div>
       )

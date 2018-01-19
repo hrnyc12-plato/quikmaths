@@ -46,7 +46,6 @@ class Main extends React.Component {
       userFriends: [],
       // states for user badges
       badges: [],
-
       // array of leaderboard records
       recordsList: [],
       // render login page conditionally
@@ -315,7 +314,9 @@ class Main extends React.Component {
       username: user
     })
     .then((response)=> {
+      console.log('what is the data when calling get User info', response);
       this.setState({
+        userId: response.data[0].id,
         username: response.data[0].username,
         createdAt: response.data[0].createdAt,
         gamesPlayed: response.data[0].gamesPlayed,
@@ -326,6 +327,7 @@ class Main extends React.Component {
         profilePicture: response.data[0].profilePicture
       }, ()=> {
         this.getUserFriends(this.state.username);
+        this.getUserBadges();
       })
     })
     .catch((error)=> {
@@ -347,14 +349,23 @@ class Main extends React.Component {
 
   updateProfilePicture(url) {
     this.setState({profilePicture: url});
-  }
   // this is going to get the badges associated with a username
-  getUserBadges() {
-    axios.post('user/badges', {
-      username: this.state.username,
-    })
     // then set the state with the array of badges that comes back for the user;
   }
+
+  getUserBadges() {
+    console.log('what is userId', this.state.userId)
+    console.log('the state before getting user badges', this.state)
+    axios.post('/user/badges', {
+      userId: this.state.userId,
+    }).then(results => {
+      console.log('server resonded with', results);
+      let badges = results.data.map(badge => badge.name)
+      this.setState({badges}, () => {
+        console.log('state after getting user badges', this.state);
+      }) 
+    }).catch(error => console.log('error in getting user badges', error))
+  };
 
   updateUserInfo(object) {
     this.setState({
@@ -478,6 +489,7 @@ class Main extends React.Component {
               topLevelState={this.state}
               db={firebase}
               getUserInfo={this.getUserInfo}
+              badges={this.state.badges}
               getUserBadges={this.getUserBadges}
               getLeaderBoard={this.getLeaderBoard}
               getUserFriends={this.getUserFriends}
@@ -518,6 +530,8 @@ class Main extends React.Component {
               arrayWithResults = {this.state.arrayWithResults}
               userId = {this.state.userId}
               username = {this.state.username}
+              getUserInfo={this.getUserInfo}
+              getUserBadges={this.getUserBadges}
               numberCorrectUpdate = {this.numberCorrectUpdate}
               numberIncorrectUpdate = {this.numberIncorrectUpdate}
               resetCounts = {this.resetCounts}
@@ -533,8 +547,6 @@ class Main extends React.Component {
               questionString = {this.state.questionString}
               answers = {this.state.answers}
               correctAnswer = {this.state.correctAnswer}
-              getUserInfo={this.getUserInfo}
-              getUserBadges={this.getUserBadges}
             />
             </Paper>
           </div>

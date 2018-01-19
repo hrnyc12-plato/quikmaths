@@ -52,6 +52,7 @@ class NavTopBar extends React.Component {
   }
 
   render(){
+    console.log('navbar inherited badges props?', this.props)
     return (
       <div>
         <div>
@@ -136,6 +137,7 @@ class NavTopBar extends React.Component {
           updateProfilePicture = {this.props.updateProfilePicture}
           userFriends={this.props.userFriends}
           getUserFriends={this.props.getUserFriends}
+          badges= {this.props.badges}
         />
 
         <NavSideBar 

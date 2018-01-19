@@ -45,6 +45,11 @@
   padding:20px;
 }
 
+.badgesDataTable {
+  margin-top:2px;
+  padding:2px;
+}
+
 .title {
   font-size:50px;
   padding-top:30px;

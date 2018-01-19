@@ -22,11 +22,12 @@ class BarGraph extends React.Component {
       data: {
         x: 'x',
         columns: [xLabels, valuesColumn],
-        type: 'bar'
+        type: 'bar',
+        labels: true
       },
       bar: {
         width: {
-          ratio: 0.5
+          ratio: 0.2
         }
       },
       axis: {
@@ -48,7 +49,7 @@ class BarGraph extends React.Component {
   render () {
     return (
       <div>
-        <div id="chart"></div>
+        <div style={{width: '500px', fontSize: '20px', fontFamily:'Poppins'}} id="chart"></div>
       </div>
     );
   }

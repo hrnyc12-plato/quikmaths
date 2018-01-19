@@ -76,9 +76,9 @@ class Game extends React.Component {
     } else if (score >= 19000) {
       awardBadgesList.push('gold')
     } else if (correctAnswers === 10) {
-      awardBadgesList.push('epic fail')
-    } else if (incorrectAnswers === 10) {
       awardBadgesList.push('marksman')
+    } else if (incorrectAnswers === 10) {
+      awardBadgesList.push('epic fail')
     }
     return awardBadgesList;
   }

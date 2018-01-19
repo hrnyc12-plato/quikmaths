@@ -97,7 +97,7 @@ class UserInfo extends React.Component {
             fixedFooter={true}
             selectable={false}
             multiSelectable={false}
-            style={{width:'500px', margin: 'auto'}}
+            style={{width:'700px', margin: 'auto'}}
           >
             <TableHeader
               displaySelectAll={false}

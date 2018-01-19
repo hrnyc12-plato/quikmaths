@@ -43,6 +43,7 @@ class Main extends React.Component {
       highScore: null,
       bestTime: null,
       profilePicture:null,
+      userFriends: [],
       // states for user badges
       badges: [],
 
@@ -81,6 +82,7 @@ class Main extends React.Component {
     this.getUserInfo = this.getUserInfo.bind(this)
     this.getUserBadges = this.getUserBadges.bind(this)
     this.getLeaderBoard = this.getLeaderBoard.bind(this)
+    this.getUserFriends = this.getUserFriends.bind(this)
     this.numberCorrectUpdate = this.numberCorrectUpdate.bind(this)
     this.numberIncorrectUpdate = this.numberIncorrectUpdate.bind(this)
     this.resetCounts = this.resetCounts.bind(this)
@@ -322,11 +324,24 @@ class Main extends React.Component {
         highScore: response.data[0].highScore,
         bestTime: response.data[0].bestTime,
         profilePicture: response.data[0].profilePicture
+      }, ()=> {
+        this.getUserFriends(this.state.username);
       })
     })
     .catch((error)=> {
       console.log(error);
     });
+  }
+  
+  getUserFriends(username) {
+    axios.get('/friends', {
+      params: {
+        username: username
+      }
+    }).then((response) => {
+      console.log('response from get userFriends on client', response);
+      this.setState({userFriends:response.data})
+    })
   }
 
 
@@ -465,7 +480,9 @@ class Main extends React.Component {
               getUserInfo={this.getUserInfo}
               getUserBadges={this.getUserBadges}
               getLeaderBoard={this.getLeaderBoard}
+              getUserFriends={this.getUserFriends}
               username={this.state.username}
+              userFriends={this.state.userFriends}
               createdAt={this.state.createdAt}
               gamesPlayed={this.state.gamesPlayed}
               totalCorrect={this.state.totalCorrect}

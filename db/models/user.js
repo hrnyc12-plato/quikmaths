@@ -1,6 +1,6 @@
 const Sequelize = require('../config.js').Sequelize;
 const sequelize = require('../config.js').sequelize;
-
+const Relationship = require('../models/relationship');
 const UserBadges = require('../models/userBadges');
 
 const User = sequelize.define('user', {
@@ -32,6 +32,7 @@ const User = sequelize.define('user', {
   }
 });
 
+User.hasMany(Relationship, {as: 'Relationships'})
 User.sync();
 
 module.exports = User;

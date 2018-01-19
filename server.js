@@ -217,6 +217,33 @@ app.post('/allRecords', (req, res) => {
   });
 })
 
+
+
+app.get('/friends', (req, res)=> {
+  db.getAllFriends(req.query.username, (friends) => {
+    res.send(friends);
+  })
+});
+
+app.delete('/friends', (req,res) => {
+  var username = req.query.loggedInUsername;
+  var friendUsername = req.query.friendUsername
+  db.deleteFriend(username, friendUsername, (results) => {
+    res.send(results);
+  });
+})
+
+app.post('/friends', (req,res) => {
+  // console.log('req.body', req.body);
+  db.addFriend('Jimmy', 'ryan', (results)=>{
+    res.send(results);
+  });
+});
+
+
+
+
+
 app.get('/firebaseConfig', (req, res) => {
   res.json(config.FIREBASE_CONFIG);
 });

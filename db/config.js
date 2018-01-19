@@ -27,8 +27,8 @@ const Sequelize = require('sequelize');
 //         const sequelize = new Sequelize(config.base, config.user, config.pass, config.options)
 
 
- const sequelize = new Sequelize('heroku_4d344af8cb59e0f', 'b03e5e18f3e601', 'b92c6c39', {
-  host: 'us-cdbr-iron-east-05.cleardb.net',
+const sequelize = new Sequelize('quikmath', 'plato', 'hrnyc12plato', {
+ host: 'quikmaths.ccl2ixzx9sdm.us-east-2.rds.amazonaws.com',
   dialect: 'mysql',
   pool: {
     max: 20,

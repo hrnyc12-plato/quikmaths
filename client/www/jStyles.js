@@ -26,6 +26,9 @@ module.exports = {
     userInfoDataTable: {
         fontSize: '20px'
     },
+    badgesDataTable: {
+        padding: '2px'
+    }, 
     tableCell:{
         color:'black',
         border: '1px rgb(128, 128, 128) solid',

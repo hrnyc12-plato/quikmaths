@@ -22,7 +22,7 @@ class RoomDisplay extends React.Component {
     super(props)
     this.style = {
       marginTop: '10px',
-      marginBottom: '20px',
+      marginBottom: '25px',
       marginLeft: '150px'
     }
 
@@ -42,6 +42,8 @@ class RoomDisplay extends React.Component {
     }
 
     this.deleteCell = {
+      margin: 0,
+      padding: 0,
       textAlign: 'left',
       backgroundColor: 'white',
       float: 'left',

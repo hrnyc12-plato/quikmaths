@@ -388,7 +388,7 @@ class Main extends React.Component {
           "username" : result.data.username}) 
         }
       })
-  }
+  } 
 
   handleLogin(obj) {
     axios.post('/login', obj)

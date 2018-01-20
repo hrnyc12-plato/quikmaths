@@ -19,7 +19,8 @@ class CreateRoom extends React.Component {
 
     this.style = {
       textAlign: 'center',
-      marginLeft: '-150px'
+      marginLeft: '-150px',
+      marginBottom: '10px'
     }
 
     this.handleNameChange = this.handleNameChange.bind(this)

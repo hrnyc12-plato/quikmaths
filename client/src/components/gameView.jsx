@@ -10,6 +10,7 @@ import CheckBoxOutline from 'material-ui/svg-icons/toggle/check-box-outline-blan
 import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress';
+import ChatRoom from './chatRoom.jsx';
 
 class GameView extends React.Component {
   constructor (props) {
@@ -58,7 +59,6 @@ class GameView extends React.Component {
     let waiting = roomInfo.waiting;
 
     if (!this.state.gameInfo) {
-      console.log('RAW GAME INFO', roomInfo.gameInfo)
       let rawGameInfo = roomInfo.gameInfo;
       let parsedGameInfo = [];
 
@@ -76,7 +76,7 @@ class GameView extends React.Component {
 
       this.setState({
         gameInfo: parsedGameInfo
-      }, () => console.log("PARSED GAME INFO", this.state.gameInfo))
+      })
     }
 
     let users = [];
@@ -148,10 +148,15 @@ class GameView extends React.Component {
                   />
                 );
               })}
-            <RaisedButton disabled={this.state.users.length === 1 || this.state.userReady} onClick={this.handleReadyClick} label="Ready"/>
+              <RaisedButton disabled={this.state.users.length === 1 || this.state.userReady} onClick={this.handleReadyClick} label="Ready"/>
             </List>
-            <div style={{float: 'left', width: '500px'}}>
-              <h2> THIS IS A PLACEHOLDER FOR THE CHAT </h2>
+            <div style={{height: 'auto', float: 'left', width: '500px'}}>
+              <ChatRoom 
+                username={this.state.username}
+                db={this.state.db}
+                roomId={this.state.roomId}
+                profilePicture={this.state.profilePicture}
+              />
             </div>
         </div>
       ) : (<div>Loading</div>)

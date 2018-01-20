@@ -14,7 +14,7 @@ import {
 } from 'material-ui/Table';
 import RaisedButton from 'material-ui/RaisedButton';
 import styles from '../../www/jStyles.js';
-import FriendList from './friendList.jsx';
+import Divider from 'material-ui/Divider';
 
 const CLOUDINARY_UPLOAD_PRESET = 'dwpjl6zz';
 const CLOUDINARY_UPLOAD_URL = 'https://api.cloudinary.com/v1_1/dvurqudmp/upload';
@@ -136,9 +136,6 @@ class UserInfo extends React.Component {
               </TableRow>
             </TableBody>
           </Table>
-        <div>
-          <FriendList getUserFriends={this.props.getUserFriends} username={this.props.username} userFriends={this.props.userFriends}/>
-        </div>
         </div>
           <Badges badges={this.props.badges}/>
           <RaisedButton label="Logout" style={styles.button} onClick={this.props.logout}/>

@@ -27,13 +27,8 @@ const Sequelize = require('sequelize');
 //         const sequelize = new Sequelize(config.base, config.user, config.pass, config.options)
 
 
-<<<<<<< HEAD
-const sequelize = new Sequelize('quikmath', 'plato', 'hrnyc12plato', {
- host: 'quikmaths.ccl2ixzx9sdm.us-east-2.rds.amazonaws.com',
-=======
  const sequelize = new Sequelize('quikmath', 'plato', 'hrnyc12plato', {
   host: 'quikmaths.ccl2ixzx9sdm.us-east-2.rds.amazonaws.com',
->>>>>>> working on rendering correct badge images
   dialect: 'mysql',
   pool: {
     max: 20,

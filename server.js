@@ -151,10 +151,6 @@ app.post('/newRecord', (req, res) => {
 */
 
 app.post('/updateUser', (req, res) => {
-<<<<<<< HEAD
-=======
-  // console.log('updateUser, req.body', req.body);
->>>>>>> working on rendering correct badge images
   db.updateUser(req.body, (user) => {
     res.json(user)
   });

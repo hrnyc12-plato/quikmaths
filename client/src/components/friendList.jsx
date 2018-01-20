@@ -11,6 +11,10 @@ import IconButton from 'material-ui/IconButton';
 import ActionDeleteForever from 'material-ui/svg-icons/action/delete-forever';
 import NoteAdd from 'material-ui/svg-icons/action/note-add';
 import axios from 'axios';
+import TextField from 'material-ui/TextField';
+import GroupAdd from 'material-ui/svg-icons/social/group-add';
+import RemoveCircle from 'material-ui/svg-icons/content/remove-circle';
+import {red500, green400} from 'material-ui/styles/colors';
 
 
 class FriendList extends React.Component {
@@ -43,11 +47,9 @@ class FriendList extends React.Component {
           friendUsername: this.state.friendUsername
         }
       }).then((results) => {
-        console.log('YYYYY');
-        console.log('results from handle add ', results);
         this.props.getUserFriends(this.props.username);
       }).catch((err) => {
-        console.log('ERRORYYYYY',err);
+        console.log('error on handle Add Click',err);
       })
   }
 
@@ -56,32 +58,41 @@ class FriendList extends React.Component {
   }
 
   render() {
-    return (<div>
-      <h1>FRIENDS</h1>
-      <div>
-        <span>Search for a Friend: </span>
-        <input onChange={this.handleFriendSearchChange.bind(this)}></input>
-        <IconButton onClick={this.handleAddClick.bind(this)}>
-          <NoteAdd/>
-        </IconButton>
-      </div>
-        <List style={{width:'300px' ,margin:'auto'}}>
-          {this.props.userFriends.map((friend, i)=> (
-            <ListItem
-                key={i}
-                value={friend.username}
-                primaryText={friend.username}
-                leftAvatar={<Avatar src={friend.profilePicture}/>}
-            >
-                <div>
-                  <IconButton value={friend.username} onClick={this.handleDeleteClick.bind(this, friend.username)}>
-                    <ActionDeleteForever/>
-                  </IconButton>
-                </div>
-            </ListItem>
-          ))}
-        </List>
-    </div>)
+    if (this.props.selectedTab === 'friends' && this.props.toggleTab) {
+      return (<div>
+        <h1>FRIENDS</h1>
+        <div>
+          {/* <input onChange={this.handleFriendSearchChange.bind(this)}></input> */}
+          <TextField
+            type="text"
+            value={this.state.value}
+            floatingLabelText="Search and add a Friend"
+            onChange={this.handleFriendSearchChange.bind(this)}
+          />
+          <IconButton onClick={this.handleAddClick.bind(this)}>
+            <GroupAdd />
+          </IconButton>
+        </div>
+          <List style={{width:'400px' ,margin:'auto'}}>
+            {this.props.userFriends.map((friend, i)=> (
+              <ListItem
+                  key={i}
+                  style={{height:'70px', fontSize:'20px', weight:'900', padding:'5px'}}
+                  value={friend.username}
+                  primaryText={friend.username}
+                  leftAvatar={<Avatar src={friend.profilePicture}/>}
+                  rightIcon={
+                    <IconButton value={friend.username} style={{padding:'4  px', height:'20px', width:'auto'}} onClick={this.handleDeleteClick.bind(this, friend.username)}>
+                      <RemoveCircle style={{margin: '0px 20px 20px 0px'}} color={red500}/>
+                    </IconButton>}
+              >
+              </ListItem>
+            ))}
+          </List>
+      </div>)
+      } else {
+        return null;
+      }
   }
 
 }

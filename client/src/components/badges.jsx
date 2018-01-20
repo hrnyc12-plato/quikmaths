@@ -103,8 +103,7 @@ class Badges extends React.Component {
             >
               <TableRow>
                 <TableRowColumn style={styles.userInfoDataTable}><b>Badges</b></TableRowColumn>    
-                <TableRowColumn style={styles.userInfoDataTable} children={<BadgeData badges={this.grabBadgeData()}/>}>    
-                </TableRowColumn>  
+                  <BadgeData badges={this.grabBadgeData()}/>
               </TableRow>
             </TableBody>
           </Table>

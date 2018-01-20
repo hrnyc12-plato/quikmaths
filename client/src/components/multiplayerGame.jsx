@@ -155,7 +155,7 @@ class MultiplayerGame extends React.Component {
   render() {
     return (
       <div style={{fontFamily: 'Roboto', marginTop: '5px'}}>
-        <div>{this.state.currentQuestion.questionString}</div>
+        <div style={styles.questionString}>{this.state.currentQuestion.questionString}</div>
 				<div>{this.state.currentQuestion.answers.map((answer, id) => 
           <Answer 
             key={id}
@@ -163,9 +163,10 @@ class MultiplayerGame extends React.Component {
             handleClick={this.handleAnswerClick}
 					/>)}
 				</div>
-				<Timer timeElapsed={this.state.timeElapsed} />
+        <div className="timeQuestionsLeft">
+				  <Timer timeElapsed={this.state.timeElapsed} />
+        </div>
 				<div>Questions Left: {this.props.gameInfo.length - this.state.currentIndex}</div>
-        {/* <button onClick={this.onQuitClick}>Quit</button> */}
       </div>
     )
   }

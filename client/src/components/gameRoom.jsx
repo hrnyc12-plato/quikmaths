@@ -335,7 +335,7 @@ class GameRoom extends React.Component {
 
   render () {
     return (
-      <Paper style={styles.paperStyle} zDepth={2}>
+      <Paper style={styles.multiPaperStyle} zDepth={2}>
         <NavTopBar 
           topLevelState={this.state}
           db={firebase}
@@ -356,8 +356,10 @@ class GameRoom extends React.Component {
           profilePicture={this.state.profilePicture}
           filterLeaderboard={this.filterLeaderboard}
         />
-        <div style={{marginTop: '5px'}}>
-        <RaisedButton label="Leave Room" onClick={this.leaveRoom}/>
+        <div style={{marginTop: '5px', marginBottom: '5px'}}>
+        <RaisedButton style={{float: 'left', marginLeft: '225px'}} label="Leave Room" onClick={this.leaveRoom}/>
+        <br/>
+        <br/>
         <GameView
           state={this.state}
           quitGame={this.quitGame}

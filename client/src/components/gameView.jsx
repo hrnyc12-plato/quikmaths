@@ -135,7 +135,7 @@ class GameView extends React.Component {
   render () {
     if (this.state.waiting) {
       return this.state.users.length ? (
-        <div style={{fontFamily: 'Poppins', marginLeft: '300px', width: '800px', alignItems: 'center', textAlign: 'center', marginBottom: '10px'}}>
+        <div style={{height: 'auto', fontFamily: 'Poppins', marginLeft: '300px', width: '800px', alignItems: 'center', textAlign: 'center', marginBottom: '10px'}}>
           <h3>Welcome to {this.state.roomName}</h3>
             <List style={{float: 'left', textAlign: 'center', width: '200px'}}>
               <Subheader>Users</Subheader>
@@ -150,10 +150,12 @@ class GameView extends React.Component {
               })}
               <RaisedButton disabled={this.state.users.length === 1 || this.state.userReady} onClick={this.handleReadyClick} label="Ready"/>
             </List>
-            <div style={{float: 'left', width: '500px'}}>
+            <div style={{height: 'auto', float: 'left', width: '500px'}}>
               <ChatRoom 
                 username={this.state.username}
                 db={this.state.db}
+                roomId={this.state.roomId}
+                profilePicture={this.state.profilePicture}
               />
             </div>
         </div>

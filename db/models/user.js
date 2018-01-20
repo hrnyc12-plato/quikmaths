@@ -2,6 +2,7 @@ const Sequelize = require('../config.js').Sequelize;
 const sequelize = require('../config.js').sequelize;
 const Relationship = require('../models/relationship');
 const UserBadges = require('../models/userBadges');
+const Records = require('../models/records')
 
 const User = sequelize.define('user', {
   username: Sequelize.DataTypes.STRING,
@@ -34,5 +35,6 @@ const User = sequelize.define('user', {
 
 User.hasMany(Relationship, {as: 'Relationships'})
 User.sync();
+Records.sync();
 
 module.exports = User;

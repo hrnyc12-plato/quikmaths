@@ -30,11 +30,30 @@ class LeaderBoard extends React.Component {
   }
 
   handleFilterSelect(event, key, value, ) {
-    this.setState({filterOperator: value})
+    this.setState({filterOperator: value});
     this.props.filterLeaderboard(value);
   }
 
+  // componentDidMount() {
+  //   this.props.getFriendsLeaderBoard();
+  // }
+
+  // renderFriendList() {
+  //   return(
+  //   this.props.FriendsRecords.length > 0 ? this.props.FriendsRecords.map((row, i) => {
+  //     return (<TableRow key={i}>
+  //       <TableRowColumn style={styles.tableCell}>{i+1}</TableRowColumn>
+  //       <TableRowColumn style={styles.tableCell}>{row.username}</TableRowColumn>
+  //       <TableRowColumn style={styles.tableCell}>{row.score}</TableRowColumn>
+  //       <TableRowColumn style={styles.tableCell}>{row.time} seconds</TableRowColumn>
+  //       <TableRowColumn style={styles.tableCell}><b>{row.operator}</b></TableRowColumn>
+  //       <TableRowColumn style={styles.tableCell}>{row.numberCorrect / (row.numberCorrect + row.numberIncorrect) * 100 + ' %'}</TableRowColumn>
+  //     </TableRow>
+  //     )
+  // }
+
   render() {
+    console.log('friends record list passed down to leaderboard', this.props)
     if (this.props.selectedTab === 'leaderboard' && this.props.toggleTab) {
       return (
       <div>
@@ -49,6 +68,7 @@ class LeaderBoard extends React.Component {
             <MenuItem value={"-"} primaryText="Top 10 Subtraction Scores" />
             <MenuItem value={"*"} primaryText="Top 10 Multiplication Scores" />
             <MenuItem value={"/"} primaryText="Top 10 Division Scores" />
+            <MenuItem value={"fwend"} primaryText="Friends Top Scores" />
           </DropDownMenu>
         </div>
         <div className ='leaderBoardTable'>
@@ -79,7 +99,16 @@ class LeaderBoard extends React.Component {
               showRowHover={true}
               stripedRows={true}
             >
-              {this.props.recordsList.length > 0 ? this.props.recordsList.map((row, i) => {
+              {this.state.filterOperator === "fwend" ? this.props.friendsRecords.map((row, i) => {
+                return (<TableRow key={i}>
+                  <TableRowColumn style={styles.tableCell}>{i+1}</TableRowColumn>
+                  <TableRowColumn style={styles.tableCell}>{row.username}</TableRowColumn>
+                  <TableRowColumn style={styles.tableCell}>{row.score}</TableRowColumn>
+                  <TableRowColumn style={styles.tableCell}>{row.time} seconds</TableRowColumn>
+                  <TableRowColumn style={styles.tableCell}><b>{row.operator}</b></TableRowColumn>
+                  <TableRowColumn style={styles.tableCell}>{row.numberCorrect / (row.numberCorrect + row.numberIncorrect) * 100 + ' %'}</TableRowColumn>
+                </TableRow>) 
+                }) : this.props.recordsList.length > 0 ? this.props.recordsList.map((row, i) => {
                 return (<TableRow key={i}>
                   <TableRowColumn style={styles.tableCell}>{i+1}</TableRowColumn>
                   <TableRowColumn style={styles.tableCell}>{row.username}</TableRowColumn>
@@ -88,7 +117,19 @@ class LeaderBoard extends React.Component {
                   <TableRowColumn style={styles.tableCell}><b>{row.operator}</b></TableRowColumn>
                   <TableRowColumn style={styles.tableCell}>{row.numberCorrect / (row.numberCorrect + row.numberIncorrect) * 100 + ' %'}</TableRowColumn>
                 </TableRow>)
+
               }) : ''}
+              {/* {this.props.friendsRecords.length > 0 ? this.props.friendsRecords.map((row, i) => {
+                return (<TableRow key={i}>
+                  <TableRowColumn style={styles.tableCell}>{i+1}</TableRowColumn>
+                  <TableRowColumn style={styles.tableCell}>{row.username}</TableRowColumn>
+                  <TableRowColumn style={styles.tableCell}>{row.score}</TableRowColumn>
+                  <TableRowColumn style={styles.tableCell}>{row.time} seconds</TableRowColumn>
+                  <TableRowColumn style={styles.tableCell}><b>{row.operator}</b></TableRowColumn>
+                  <TableRowColumn style={styles.tableCell}>{row.numberCorrect / (row.numberCorrect + row.numberIncorrect) * 100 + ' %'}</TableRowColumn>
+                </TableRow>)
+                
+              }) : ''} */}
             </TableBody>
           </Table>
         </div>
@@ -99,5 +140,18 @@ class LeaderBoard extends React.Component {
     }
   }
 }
+
+const friendTable = (props) => (
+  props.friendsRecords.length > 0 ? props.friendsRecords.map((row, i) => {
+    return (<TableRow key={i}>
+      <TableRowColumn style={styles.tableCell}>{i+1}</TableRowColumn>
+      <TableRowColumn style={styles.tableCell}>{row.username}</TableRowColumn>
+      <TableRowColumn style={styles.tableCell}>{row.score}</TableRowColumn>
+      <TableRowColumn style={styles.tableCell}>{row.time} seconds</TableRowColumn>
+      <TableRowColumn style={styles.tableCell}><b>{row.operator}</b></TableRowColumn>
+      <TableRowColumn style={styles.tableCell}>{row.numberCorrect / (row.numberCorrect + row.numberIncorrect) * 100 + ' %'}</TableRowColumn>
+    </TableRow>)
+    }) : ''
+  )
 
 export default LeaderBoard;

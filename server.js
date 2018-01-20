@@ -173,7 +173,7 @@ app.post('/userRecords', (req, res) => {
   const ascending = req.body.ascending;
   const operator = req.body.operator
   
-  db.getAllRecordsForUser(username, (records) => {
+  db.getAllRecordsForUser( (records) => {
     if (operator) {
       records = records.filter(record => record.operator === operator);
     }
@@ -214,7 +214,26 @@ app.post('/allRecords', (req, res) => {
   });
 })
 
-
+// return all of a user's friends records
+/* 
+{
+  //userId
+}
+*/
+app.post('/friendsRecords', (req,res) => {
+  const ascending = req.body.ascending;
+  const username = req.body.username;
+  console.log('what is reqbody', req.body)
+  db.getAllFriendsRecords(username, (records) => {
+    if (ascending) {
+      records = records.sort((a, b) => {return a.score - b.score});
+      res.json(records.slice(0, 10));
+    } else {
+      records = records.sort((a, b) => {return b.score - a.score});
+      res.json(records.slice(0, 10));
+    }
+  })
+});
 
 app.get('/friends', (req, res)=> {
   db.getAllFriends(req.query.username, (friends) => {

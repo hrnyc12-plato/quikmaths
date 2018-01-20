@@ -53,7 +53,7 @@ class NavTopBar extends React.Component {
   }
 
   render(){
-    console.log('navbar inherited badges props?', this.props)
+    // console.log('nav top bar props', this.props);
     return (
       <div>
         <div>
@@ -173,6 +173,8 @@ class NavTopBar extends React.Component {
           selectedTab={this.state.selectedTab}
           toggleTab={this.state.toggleTab}
           recordsList={this.props.recordsList}
+          friendsRecords={this.props.friendsRecords}
+          getFriendsLeaderBoard={this.props.getFriendsLeaderBoard}
         />
         <InfoSideBar
           selectedTab={this.state.selectedTab}

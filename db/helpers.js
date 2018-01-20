@@ -182,8 +182,27 @@ const getAllRecords = function(cb) {
     })
 } 
 
+const getAllFriendsRecords = function(username, cb) {
+  return User.findAll({
+    where: {
+      "username": username
+    },
+    include: [ { model: Relationship, as: 'Relationships' } ]
+  }).then(user => {
+    //grab the user's friends ids and stringify in preparation for a sql query
+     // construct a query to select all of the records from the user's friends
+    let friendIds = "(" + user[0].Relationships.map(friend => {
+      return friend.friendId;
+    }).join() + ")"
+    db.sequelize.query('SELECT * FROM records r INNER JOIN users u ON (u.username=r.username) WHERE u.id in ' + friendIds + ';', {type: db.sequelize.QueryTypes.SELECT}) 
+    .then( results => {
+      cb(results);
+    })
+  })
+}
+
 const getAllFriends = function(username, cb) {
-  User.findAll({
+  return User.findAll({
     where: {"username": username}
   })
   .then(results => {
@@ -255,5 +274,6 @@ module.exports = {
   getAllFriends:getAllFriends,
   deleteFriend:deleteFriend,
   addFriend:addFriend,
-  getAllBadges: getAllBadges
+  getAllBadges: getAllBadges,
+  getAllFriendsRecords: getAllFriendsRecords
 }

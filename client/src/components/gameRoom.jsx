@@ -358,6 +358,8 @@ class GameRoom extends React.Component {
         />
         <div style={{marginTop: '5px', marginBottom: '5px'}}>
         <RaisedButton style={{float: 'left', marginLeft: '225px'}} label="Leave Room" onClick={this.leaveRoom}/>
+        <br/>
+        <br/>
         <GameView
           state={this.state}
           quitGame={this.quitGame}

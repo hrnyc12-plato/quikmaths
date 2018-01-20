@@ -292,7 +292,7 @@ class Main extends React.Component {
 
   levelHandler(e) {
     e.preventDefault();
-    this.setState({level: e.target.value}, () => console.log('level selected is: ', this.state.level));
+    this.setState({level: e.target.value});
   }
 
   startNewGame(operator) {
@@ -388,7 +388,7 @@ class Main extends React.Component {
           "username" : result.data.username}) 
         }
       })
-  }
+  } 
 
   handleLogin(obj) {
     axios.post('/login', obj)

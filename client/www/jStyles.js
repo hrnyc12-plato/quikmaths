@@ -27,5 +27,9 @@ module.exports = {
         color:'black',
         border: '1px rgb(128, 128, 128) solid',
         textAlign: 'center'
+    },
+    questionString: {
+      fontSize: '30px',
+      marginBottom: '30px'
     }
 }

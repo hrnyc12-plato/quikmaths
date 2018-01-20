@@ -49,7 +49,7 @@ class BarGraph extends React.Component {
   render () {
     return (
       <div>
-        <div style={{width: '500px', fontSize: '20px', fontFamily:'Poppins'}} id="chart"></div>
+        <div style={{width: '500px', fontSize: '20px', fontFamily:'Roboto'}} id="chart"></div>
       </div>
     );
   }

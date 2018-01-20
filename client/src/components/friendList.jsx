@@ -14,7 +14,7 @@ import axios from 'axios';
 import TextField from 'material-ui/TextField';
 import GroupAdd from 'material-ui/svg-icons/social/group-add';
 import RemoveCircle from 'material-ui/svg-icons/content/remove-circle';
-import {red500, green400} from 'material-ui/styles/colors';
+import {red500, green400, grey50} from 'material-ui/styles/colors';
 
 
 class FriendList extends React.Component {
@@ -36,6 +36,7 @@ class FriendList extends React.Component {
         }).then((results) => {
           console.log('results from handle delete ',results);
             this.props.getUserFriends(this.props.username);
+            this.setState({friendUsername : ''})
         })
     })
   }
@@ -48,8 +49,9 @@ class FriendList extends React.Component {
         }
       }).then((results) => {
         this.props.getUserFriends(this.props.username);
+        this.setState({friendUsername : ''})
       }).catch((err) => {
-        console.log('error on handle Add Click',err);
+        console.log('error on handle Add Click', err);
       })
   }
 
@@ -62,22 +64,21 @@ class FriendList extends React.Component {
       return (<div>
         <h1>FRIENDS</h1>
         <div>
-          {/* <input onChange={this.handleFriendSearchChange.bind(this)}></input> */}
           <TextField
             type="text"
-            value={this.state.value}
+            value={this.state.friendUsername}
             floatingLabelText="Search and add a Friend"
             onChange={this.handleFriendSearchChange.bind(this)}
           />
-          <IconButton onClick={this.handleAddClick.bind(this)}>
-            <GroupAdd />
+          <IconButton style={{height: '30px', width: '30px',padding: '0px',backgroundColor:'rgb(124,179,66)', borderRadius: '100%'}} onClick={this.handleAddClick.bind(this)}>
+            <GroupAdd color={grey50}/>
           </IconButton>
         </div>
-          <List style={{width:'400px' ,margin:'auto'}}>
+          <List style={{width:'400px' ,margin:'auto', paddingBottom:'40px'}}>
             {this.props.userFriends.map((friend, i)=> (
               <ListItem
                   key={i}
-                  style={{height:'70px', fontSize:'20px', weight:'900', padding:'5px'}}
+                  style={{height:'70px', fontSize:'20px', weight:'900', padding:'5px', border: '1px solid lightgrey'}}
                   value={friend.username}
                   primaryText={friend.username}
                   leftAvatar={<Avatar src={friend.profilePicture}/>}

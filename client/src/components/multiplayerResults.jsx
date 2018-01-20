@@ -10,20 +10,20 @@ import {
 } from 'material-ui/Table';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import styles from '../../www/jStyles'
+import styles from '../../www/jStyles';
 
 class MultiplayerResults extends React.Component {
   constructor (props) {
     super(props);
     this.state = {
-      display: 'score (pts)'
+      display: 'score (pts)',
+      userFriends: []
     }
 
     this.pluckData();
     console.log(this.props)
     this.handleSelectChange = this.handleSelectChange.bind(this);
   }
-
 
   pluckData() {
     this.state.data = {
@@ -51,9 +51,8 @@ class MultiplayerResults extends React.Component {
 
   render () {
     return (
-      <div style={{marginBottom: '10px'}}>
-      <h3> Results </h3>
-      <div style={{overflow: 'hidden', marginLeft: '200px'}}> 
+      <div style={{marginTop: '1%', marginBottom: '10px'}}>
+      <div style={{overflow: 'hidden', marginLeft: '225px'}}> 
 
         <div style={{float: 'left', overflow: 'hidden', width: '500px'}}>
           <Table

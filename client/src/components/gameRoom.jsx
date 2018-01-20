@@ -6,6 +6,7 @@ import axios from 'axios';
 import Paper from 'material-ui/Paper';
 import styles from '../../www/jStyles.js';
 import RaisedButton from 'material-ui/RaisedButton';
+import Divider from 'material-ui/Divider';
 
 class GameRoom extends React.Component {
   constructor (props) {
@@ -337,26 +338,10 @@ class GameRoom extends React.Component {
   render () {
     return (
       <Paper style={styles.multiPaperStyle} zDepth={2}>
-        <NavTopBar 
-          topLevelState={this.state}
-          db={firebase}
-          getUserInfo={this.getUserInfo}
-          getLeaderBoard={this.getLeaderBoard}
-          username={this.state.username}
-          createdAt={this.state.createdAt}
-          gamesPlayed={this.state.gamesPlayed}
-          totalCorrect={this.state.totalCorrect}
-          totalIncorrect={this.state.totalIncorrect}
-          highScore={this.state.highScore}
-          bestTime={this.state.bestTime}
-          recordsList={this.state.recordsList}
-          totalUserCorrect={this.state.totalUserCorrect}
-          totalUserIncorrect={this.state.totalUserIncorrect}
-          logout={this.logout}
-          style={this.navTopBarStyle}
-          profilePicture={this.state.profilePicture}
-          filterLeaderboard={this.filterLeaderboard}
-        />
+        <div style={{marginBottom: '10px'}}>
+        <h1 className="title">QUIKMATH</h1>
+        <Divider style={{width: '80%', marginBottom: '10px', marginLeft: '10%'}}/>
+        </div>
         <div style={{marginTop: '5px', marginBottom: '5px'}}>
         <RaisedButton style={{float: 'left', marginLeft: '225px'}} label="Leave Room" onClick={this.leaveRoom}/>
         <br/>

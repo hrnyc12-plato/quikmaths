@@ -11,16 +11,68 @@ import RaisedButton from 'material-ui/RaisedButton';
 import Paper from 'material-ui/Paper';
 import CircularProgress from 'material-ui/CircularProgress';
 import ChatRoom from './chatRoom.jsx';
+import axios from 'axios';
+import GroupAdd from 'material-ui/svg-icons/social/group-add';
+import Check from 'material-ui/svg-icons/navigation/check';
+import IconButton from 'material-ui/IconButton';
+import Divider from 'material-ui/Divider';
+import {Tabs, Tab} from 'material-ui/Tabs';
 
 class GameView extends React.Component {
   constructor (props) {
     super(props)    
     this.state = this.props.state; 
     this.state.countdown = 0;
+    this.state.userFriends = [];
+    this.state.tabValue = 'results';
+
+    const styles = {
+      headline: {
+        fontSize: 24,
+        paddingTop: 16,
+        marginBottom: 12,
+        fontWeight: 400,
+      },
+    }
 
     this.handleReadyClick = this.handleReadyClick.bind(this);
     this.beginGame = this.beginGame.bind(this);
     this.handleFinishedUser = this.handleFinishedUser.bind(this);
+    this.getUserFriends = this.getUserFriends.bind(this);
+    this.addFriend = this.addFriend.bind(this);
+    this.handleTabClick = this.handleTabClick.bind(this);
+  }
+
+  handleTabClick (tabValue) {
+    this.setState({tabValue})
+  }
+
+  componentDidMount () {
+    this.getUserFriends();
+  }
+
+  addFriend (friendUsername) {
+    axios.post('/friends', { 
+      params: {
+        loggedInUsername: this.state.username,
+        friendUsername: friendUsername
+      }
+    }).then((results) => {
+      this.getUserFriends();
+    }).catch((err) => {
+      console.log('error on add friend',err);
+    })
+  }
+
+  getUserFriends () {
+    axios.get('/friends', {
+      params: {
+        username: this.state.username
+      }
+    }).then((response) => {
+      console.log('response from get userFriends on client', response);
+      this.setState({userFriends:_.pluck(response.data, 'username')})
+    })
   }
 
   componentWillMount () {
@@ -194,12 +246,47 @@ class GameView extends React.Component {
         </div>)
     } else if (this.state.gameComplete) {
       return (
-        <div>
+        <Tabs
+          style={{marginLeft: '15%', marginTop: '1%', width: '70%'}}
+          value={this.state.value}
+          onChange={this.handleTabClick}
+        >
+        <Tab label="Results" value="results">
           <MultiplayerResults
             users={this.state.users}
             arrayWithResults={this.state.arrayWithResults}
           />
-        </div>
+        </Tab>
+        <Tab label="Chat" value="chat">
+          <div style={{marginTop: '1%'}}>
+            <List style={{marginTop: '10px', marginLeft: '15%', float: 'left', textAlign: 'center', width: '200px'}}>
+                <Subheader>Users</Subheader>
+                {this.state.users.map((user) => {
+                  return user.name !== this.state.username ? (
+                    <ListItem
+                      primaryText={user.name}
+                      leftAvatar={<Avatar src={user.profilePictureUrl}/>}
+                      rightIcon={this.state.userFriends.includes(user.name) ?
+                        <Check /> :
+                        <IconButton onClick={() => this.addFriend(user.name)}>
+                          <GroupAdd />
+                        </IconButton> }
+                    />
+                  ) : ''
+                })}
+              </List>
+              
+              <div style={{height: 'auto', float: 'left', width: '500px'}}>
+                <ChatRoom 
+                  username={this.state.username}
+                  db={this.state.db}
+                  roomId={this.state.roomId}
+                  profilePicture={this.state.profilePicture}
+                />
+              </div>
+            </div>
+          </Tab>
+        </Tabs>
       )
     }
 

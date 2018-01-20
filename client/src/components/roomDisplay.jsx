@@ -57,7 +57,7 @@ class RoomDisplay extends React.Component {
     
     firebase.auth().onAuthStateChanged(function(user) {
       if (user) {
-        console.log('User signed in', user);
+        // console.log('User signed in', user);
         var isAnonymous = user.isAnonymous;
         var uid = user.uid;
       }

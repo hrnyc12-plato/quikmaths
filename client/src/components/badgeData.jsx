@@ -49,17 +49,17 @@ class BadgeData extends React.Component {
         return(
           <div>
           {this.props.badges.map(badge => {
-            console.log('WHAT IS BADGE', badge)
+            // console.log('WHAT IS BADGE', badge)
             return (
 
 
-            <TableRowColumn >
-              <Chip style={styles.chip} >
-              {/* <IconButton tooltip="SVG Icon"> */}
-                <img width="30" styles={styles.wrapper} height="30" key={badge.name} className={badge.name} src={badge.image}/>
-                  {badge.name}
-              {/* </IconButton> */}
-        </Chip>        
+            <TableRowColumn key={badge.name}>
+                <Chip style={styles.chip} >
+                {/* <IconButton tooltip="SVG Icon"> */}
+                  <img width="30" styles={styles.wrapper} height="30" key={badge.name} className={badge.name} src={badge.image}/>
+                    {badge.name}
+                {/* </IconButton> */}
+                </Chip>
             </TableRowColumn> )}
           )
         }</div>)   

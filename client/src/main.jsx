@@ -48,6 +48,7 @@ class Main extends React.Component {
       badges: [],
       // array of leaderboard records
       recordsList: [],
+      friendsRecords: [],
       // render login page conditionally
       isLoggedIn: false,
       loginErrorText: '', 
@@ -80,6 +81,7 @@ class Main extends React.Component {
     this.questionsLeftUpdate = this.questionsLeftUpdate.bind(this)
     this.getUserInfo = this.getUserInfo.bind(this)
     this.getUserBadges = this.getUserBadges.bind(this)
+    this.getFriendsLeaderBoard = this.getFriendsLeaderBoard.bind(this);
     this.getLeaderBoard = this.getLeaderBoard.bind(this)
     this.getUserFriends = this.getUserFriends.bind(this)
     this.numberCorrectUpdate = this.numberCorrectUpdate.bind(this)
@@ -152,8 +154,22 @@ class Main extends React.Component {
     });
   }
 
+  getFriendsLeaderBoard() {
+    console.log('about to get fwends');
+    axios.post('/friendsRecords', {
+      username: this.state.username,
+      ascending: false
+    })
+    .then(response=> {
+      console.log('the server sent back the following on friend records req', response);
+      this.setState({
+        friendsRecords: response.data
+      }, () => { console.log('are the friends being set?', this.state)})
+    })
+  }
   
   getLeaderBoard(operator = '') {
+    
     axios.post('/allRecords', {
         operator: operator,
         ascending: false
@@ -314,7 +330,7 @@ class Main extends React.Component {
       username: user
     })
     .then((response)=> {
-      console.log('what is the data when calling get User info', response);
+      // console.log('what is the data when calling get User info', response);
       this.setState({
         userId: response.data[0].id,
         username: response.data[0].username,
@@ -328,6 +344,7 @@ class Main extends React.Component {
       }, ()=> {
         this.getUserFriends(this.state.username);
         this.getUserBadges();
+        this.getFriendsLeaderBoard();
       })
     })
     .catch((error)=> {
@@ -341,7 +358,7 @@ class Main extends React.Component {
         username: username
       }
     }).then((response) => {
-      console.log('response from get userFriends on client', response);
+      // console.log('response from get userFriends on client', response);
       this.setState({userFriends:response.data})
     })
   }
@@ -354,16 +371,11 @@ class Main extends React.Component {
   }
 
   getUserBadges() {
-    console.log('what is userId', this.state.userId)
-    console.log('the state before getting user badges', this.state)
     axios.post('/user/badges', {
       userId: this.state.userId,
     }).then(results => {
-      console.log('server resonded with', results);
       let badges = results.data.map(badge => badge.name)
-      this.setState({badges}, () => {
-        console.log('state after getting user badges', this.state);
-      }) 
+      this.setState({badges}); 
     }).catch(error => console.log('error in getting user badges', error))
   };
 
@@ -492,6 +504,7 @@ class Main extends React.Component {
               badges={this.state.badges}
               getUserBadges={this.getUserBadges}
               getLeaderBoard={this.getLeaderBoard}
+              getFriendsLeaderBoard={this.getFriendsLeaderBoard}
               getUserFriends={this.getUserFriends}
               username={this.state.username}
               userFriends={this.state.userFriends}
@@ -502,6 +515,7 @@ class Main extends React.Component {
               highScore={this.state.highScore}
               bestTime={this.state.bestTime}
               recordsList={this.state.recordsList}
+              friendsRecords={this.state.friendsRecords}
               totalUserCorrect={this.state.totalUserCorrect}
               totalUserIncorrect={this.state.totalUserIncorrect}
               logout={this.logout}

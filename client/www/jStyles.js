@@ -2,16 +2,17 @@ module.exports = {
     paperStyle : {
         height: 'auto',
         width: 1400,
-        margin: 20,
+        margin: 'auto',
         textAlign: 'center',
-        margin:'auto',
+        // display: 'inline-block',
         backgroundColor: 'white'
     },
-    mainPaperStyle : {
-        height: 800,
+    multiPaperStyle : {
+        height: 'auto',
         width: 1400,
-        margin: 20,
+        marginLeft: '250px',
         textAlign: 'center',
+        display: 'inline-block',
         backgroundColor: 'white'
     },
     button: {

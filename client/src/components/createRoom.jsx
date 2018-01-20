@@ -65,7 +65,7 @@ class CreateRoom extends React.Component {
           floatingLabelFixed={true}
           value={this.state.operator}
           onChange={this.handleOperatorChange}
-        >     
+        > 
           <MenuItem value={'+'} primaryText="Addition" />
           <MenuItem value={'-'} primaryText="Subtraction" />
           <MenuItem value={'*'} primaryText="Multiplication" />

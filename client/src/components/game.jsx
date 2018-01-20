@@ -152,22 +152,22 @@ class Game extends React.Component {
         return (
           <div>
             <h1>{problemType[this.props.problemType]}</h1>
-            <QuestionAnswer 
-              questionString={this.props.questionString}
-              answers={this.props.answers}
-              correctAnswer={this.props.correctAnswer}
-              newQuestion={this.props.newQuestion}
-              numberCorrectUpdate={this.props.numberCorrectUpdate}
-              questionsLeftUpdate={this.props.questionsLeftUpdate}
-              incorrectArrayUpdate={this.props.incorrectArrayUpdate}
-              correctArrayUpdate={this.props.correctArrayUpdate}
-              inProgressBoolUpdate={this.props.inProgressBoolUpdate}
-              timeElapsed={this.props.timeElapsed}
-              questionsLeft={this.props.questionsLeft}
-              numberIncorrectUpdate={this.props.numberIncorrectUpdate}
-              finalTimeUpdate={this.finalTimeUpdate}
-              saveNewScore={this.saveNewScore}
-            />
+              <QuestionAnswer 
+                questionString={this.props.questionString}
+                answers={this.props.answers}
+                correctAnswer={this.props.correctAnswer}
+                newQuestion={this.props.newQuestion}
+                numberCorrectUpdate={this.props.numberCorrectUpdate}
+                questionsLeftUpdate={this.props.questionsLeftUpdate}
+                incorrectArrayUpdate={this.props.incorrectArrayUpdate}
+                correctArrayUpdate={this.props.correctArrayUpdate}
+                inProgressBoolUpdate={this.props.inProgressBoolUpdate}
+                timeElapsed={this.props.timeElapsed}
+                questionsLeft={this.props.questionsLeft}
+                numberIncorrectUpdate={this.props.numberIncorrectUpdate}
+                finalTimeUpdate={this.finalTimeUpdate}
+                saveNewScore={this.saveNewScore}
+              />
             <RaisedButton label="Quit" style={styles.button} onClick={this.onQuitClick.bind(this)}/>
           </div>
         )

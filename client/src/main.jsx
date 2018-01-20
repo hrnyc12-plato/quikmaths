@@ -57,7 +57,8 @@ class Main extends React.Component {
       isSignedUp: true,
       totalUserCorrect: null,
       totalUserIncorrect: null,
-      mounted: false
+      mounted: false,
+      selectedLevel: ''
     }
  
     this.collapseStyle = {
@@ -290,9 +291,8 @@ class Main extends React.Component {
     })
   }
 
-  levelHandler(e) {
-    e.preventDefault();
-    this.setState({level: e.target.value});
+  levelHandler(level, levelName) {
+    this.setState({level: level, selectedLevel: levelName}, () => console.log('level selected is: ', this.state.level, this.state.levelName));
   }
 
   startNewGame(operator) {
@@ -461,7 +461,8 @@ class Main extends React.Component {
         isSignedUp: true,
         totalUserCorrect: null,
         totalUserIncorrect: null,
-        mounted: false
+        mounted: false,
+        levelName: ''
       }, () => {
         this.getIndex()
       })
@@ -515,6 +516,7 @@ class Main extends React.Component {
               inProgressBoolUpdate = {this.inProgressBoolUpdate}
               questionsLeftUpdate = {this.questionsLeftUpdate}
               choosePathMode = {this.state.choosePathMode}
+              selectedLevel ={this.state.selectedLevel}
             />
             <Game
               style={this.GameStyle}

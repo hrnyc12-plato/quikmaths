@@ -20,7 +20,7 @@ class GameRoom extends React.Component {
       this.state.userReady = false;
       this.state.roomName = this.props.match.params.name;
       this.collapseStyle = {
-        fontFamily: 'Poppins',
+        fontFamily: 'Roboto',
         display: 'grid',
         gridTemplateColumns: '1fr',
         gridColumnGap: '2.5%', 

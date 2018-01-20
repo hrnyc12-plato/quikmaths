@@ -69,7 +69,7 @@ class NavTopBar extends React.Component {
               this.toggleTab()
             }
           }}>
-            User
+            Profile
           </li>
 
 
@@ -81,7 +81,7 @@ class NavTopBar extends React.Component {
               this.toggleTab()
             }
           }}>
-            My Friends
+            Friends
           </li>
 
 
@@ -157,6 +157,7 @@ class NavTopBar extends React.Component {
           inProgressBoolUpdate = {this.props.inProgressBoolUpdate}
           questionsLeftUpdate = {this.props.questionsLeftUpdate}
           choosePathMode = {this.props.choosePathMode}
+          selectedLevel = {this.props.selectedLevel}
         />
 
         <FriendList 

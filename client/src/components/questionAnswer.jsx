@@ -1,5 +1,6 @@
 import React from 'react';
 import RaisedButton from 'material-ui/RaisedButton';
+import styles from '../../www/jStyles'
 
 class QuestionAnswer extends React.Component {
 	constructor(props){
@@ -30,7 +31,7 @@ class QuestionAnswer extends React.Component {
 	render(){
 		return(
 			<div>
-				<div>{this.props.questionString}</div>
+				<div style={styles.questionString}>{this.props.questionString}</div>
 				<div>{this.props.answers.map((answer, id) => 
 					<Answer 
 						question={this.props.questionString} 
@@ -39,8 +40,10 @@ class QuestionAnswer extends React.Component {
 						findCorrect={this.findCorrect}
 					/>)}
 				</div>
+				<div className = "timeQuestionsLeft">
 				<Timer timeElapsed={this.props.timeElapsed} />
 				<div>Questions Left: {this.props.questionsLeft}</div>
+				</div>
 			</div>
 		)
 	}

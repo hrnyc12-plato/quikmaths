@@ -154,7 +154,7 @@ class MultiplayerGame extends React.Component {
 
   render() {
     return (
-      <div style={{fontFamily: 'Poppins', marginTop: '5px'}}>
+      <div style={{fontFamily: 'Roboto', marginTop: '5px'}}>
         <div>{this.state.currentQuestion.questionString}</div>
 				<div>{this.state.currentQuestion.answers.map((answer, id) => 
           <Answer 

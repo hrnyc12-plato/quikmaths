@@ -59,7 +59,7 @@ class Login extends React.Component {
     this.style = {
       'display' : 'flex',
       'flexDirection': 'column',
-      'fontFamily' : 'Poppins'
+      'fontFamily' : 'Roboto'
     }
     this.selectStyle = {
       'cursor' : 'pointer'

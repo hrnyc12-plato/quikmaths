@@ -135,7 +135,7 @@ class GameView extends React.Component {
   render () {
     if (this.state.waiting) {
       return this.state.users.length ? (
-        <div style={{height: 'auto', fontFamily: 'Poppins', marginLeft: '300px', width: '800px', alignItems: 'center', textAlign: 'center', marginBottom: '10px'}}>
+        <div style={{fontFamily: 'Roboto', marginLeft: '300px', width: '800px', alignItems: 'center', textAlign: 'center', marginBottom: '10px'}}>
           <h3>Welcome to {this.state.roomName}</h3>
             <List style={{float: 'left', textAlign: 'center', width: '200px'}}>
               <Subheader>Users</Subheader>

@@ -136,6 +136,7 @@ class UserInfo extends React.Component {
               </TableRow>
             </TableBody>
           </Table>
+          <Divider inset={true} style={{width: 700, height:'.5px', marginLeft: 350, color:'rgb(224, 224, 224)'}} />
         </div>
           <Badges badges={this.props.badges}/>
           <RaisedButton label="Logout" style={styles.button} onClick={this.props.logout}/>

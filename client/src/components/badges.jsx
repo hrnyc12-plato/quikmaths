@@ -39,6 +39,10 @@ class Badges extends React.Component {
           image: "http://res.cloudinary.com/dvurqudmp/image/upload/v1516318064/speed_demon_jutzli.gif"
         },
         {
+          name: "angular",
+          image: "http://res.cloudinary.com/dvurqudmp/image/upload/v1516318021/angular_ddj0gm.png"
+        },
+        {
           name: "silver",
           image: "http://res.cloudinary.com/dvurqudmp/image/upload/v1516318064/silver_nquaec.png"
         },{
@@ -98,11 +102,9 @@ class Badges extends React.Component {
               stripedRows={false}
             >
               <TableRow>
-                <TableRowColumn style={styles.userInfoDataTable}><b>Badges</b></TableRowColumn>        
-                <BadgeData badges={this.grabBadgeData()}/>
-                {/* <TableRowColumn style={styles.badgesDataTable}>
-                  <img width="24" height="24" src="http://res.cloudinary.com/dvurqudmp/image/upload/v1516318063/backbone_iby6cr.png"/>
-                </TableRowColumn> */}
+                <TableRowColumn style={styles.userInfoDataTable}><b>Badges</b></TableRowColumn>    
+                <TableRowColumn style={styles.userInfoDataTable} children={<BadgeData badges={this.grabBadgeData()}/>}>    
+                </TableRowColumn>  
               </TableRow>
             </TableBody>
           </Table>

@@ -310,6 +310,7 @@ class GameRoom extends React.Component {
         profilePicture:null,
         // array of leaderboard records
         recordsList: [],
+        friendsList:[],
         // render login page conditionally
         isLoggedIn: false,
         // render game or chooseyourpath conditionally

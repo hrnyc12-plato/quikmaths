@@ -4,6 +4,7 @@ import LeaderBoard from './leaderBoard.jsx';
 import InfoSideBar from './infoSideBar.jsx';
 import RoomDisplay from './roomDisplay.jsx';
 import NavSideBar from './navSideBar.jsx';
+import FriendList from './friendList.jsx';
 
 class NavTopBar extends React.Component {
   constructor(props){
@@ -26,8 +27,8 @@ class NavTopBar extends React.Component {
       textAlign: 'center',
       cursor : 'pointer',
       height: '30px',
-      width: '200px',
-      fontSize: '20px',
+      width: '150px',
+      fontSize: '18px',
       verticalAlign: 'middle',
       display:'inline-block',
     }
@@ -72,6 +73,16 @@ class NavTopBar extends React.Component {
           </li>
 
 
+          <li 
+          style={this.listItemStyle}
+          onClick={() => {
+            this.selectedTabUpdate('friends');
+            if (!this.state.toggleTab) {
+              this.toggleTab()
+            }
+          }}>
+            My Friends
+          </li>
 
 
           <li 
@@ -84,9 +95,6 @@ class NavTopBar extends React.Component {
           }}>
             Single Player
           </li>
-
-
-
 
           <li 
           style={this.listItemStyle}
@@ -151,7 +159,14 @@ class NavTopBar extends React.Component {
           choosePathMode = {this.props.choosePathMode}
         />
 
-
+        <FriendList 
+          selectedTab={this.state.selectedTab}
+          toggleTab={this.state.toggleTab}
+          getUserFriends={this.props.getUserFriends} 
+          username={this.props.username} 
+          userFriends={this.props.userFriends}
+        />
+          
         <LeaderBoard
           filterLeaderboard={this.props.filterLeaderboard}
           selectedTab={this.state.selectedTab}

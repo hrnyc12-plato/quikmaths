@@ -62,6 +62,13 @@ class SignUp extends React.Component{
 		}
 		this.handleUsername = this.handleUsername.bind(this)
 		this.handlePassword = this.handlePassword.bind(this)
+		this.handleKeyPress = this.handleKeyPress.bind(this)
+	}
+
+	handleKeyPress (e) {
+		if (e.key === 'Enter') {
+			this.props.handleSignUp({'username': this.state.username, 'password': this.state.password})
+		}
 	}
 
 	handleUsername(e) {
@@ -115,7 +122,8 @@ class SignUp extends React.Component{
 								value={this.state.password} 
 								onChange={this.handlePassword} 
 								hintText="Enter password"
-								errorText={this.state.passwordErrorText}>
+								errorText={this.state.passwordErrorText}
+								onKeyPress={this.handleKeyPress}>
 							</TextField>
 						</div>
 					</div>

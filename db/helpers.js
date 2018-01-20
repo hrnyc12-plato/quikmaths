@@ -270,11 +270,8 @@ module.exports = {
   updateUser : updateUser,
   updateProfilePicture: updateProfilePicture,
   addNewBadges: addNewBadges,
-<<<<<<< HEAD
   getAllFriends:getAllFriends,
   deleteFriend:deleteFriend,
-  addFriend:addFriend
-=======
+  addFriend:addFriend,
   getAllBadges: getAllBadges
->>>>>>> working on rendering correct badge images
 }
